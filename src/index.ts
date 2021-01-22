@@ -2,7 +2,7 @@ import dotenv from "dotenv"
 dotenv.config()
 
 import { ApolloServer } from "apollo-server-express"
-import { read, readFileSync } from "fs"
+import { readFileSync } from "fs"
 import { createServer } from "http"
 import { createComplexityLimitRule } from "graphql-validation-complexity"
 import depthLimit from "graphql-depth-limit"
@@ -19,7 +19,7 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.get('/graphql', expressPlayground({ endpoint: '/api' }))
+app.get("/graphql", expressPlayground({ endpoint: "/api" }))
 
 const start = async () => {
     const db = await DB.get()
