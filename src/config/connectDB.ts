@@ -5,7 +5,7 @@ let db: Db | null = null
 let instance: number = 0
 const connectDB = () => {
 
-    const connect = async (): Promise<Db | null> => {
+    const connect = async () => {
 
         try {
             const client = await MongoClient.connect(
@@ -22,7 +22,7 @@ const connectDB = () => {
         }
     }
 
-    const get = async (): Promise<Db | null> => {
+    const get = async () => {
         ++instance
         console.log(`DB called ${instance} times`)
 
