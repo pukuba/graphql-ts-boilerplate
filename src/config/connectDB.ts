@@ -23,15 +23,19 @@ const connectDB = () => {
     }
 
     const get = async () => {
-        ++instance
-        console.log(`DB called ${instance} times`)
-
-        if (db != null) {
-            return db
-        } else {
-            console.log(`getting new db connection`)
-            db = await connect()
-            return db
+        try {
+            ++instance
+            console.log(`DB called ${instance} times`)
+            if (db != null) {
+                return db
+            } else {
+                console.log(`getting new db connection`)
+                db = await connect()
+                return db
+            }
+        }
+        catch (e) {
+            return e
         }
     }
 
