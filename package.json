@@ -31,7 +31,7 @@
     "fs": "0.0.1-security",
     "graphql-depth-limit": "^1.1.0",
     "graphql-playground-middleware-express": "^1.7.22",
-    "graphql-validation-complexity": "^0.4.2",
+    "graphql-query-complexity": "^0.7.2",
     "http": "0.0.1-security",
     "mocha": "^8.2.1",
     "mongodb": "^3.6.3",

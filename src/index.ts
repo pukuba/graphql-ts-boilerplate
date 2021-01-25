@@ -4,7 +4,7 @@ dotenv.config()
 import { ApolloServer } from "apollo-server-express"
 import { readFileSync } from "fs"
 import { createServer } from "http"
-import { createComplexityLimitRule } from "graphql-validation-complexity"
+import queryComplexity, { simpleEstimator } from 'graphql-query-complexity';
 import depthLimit from "graphql-depth-limit"
 import DB from "config/connectDB"
 
@@ -31,8 +31,15 @@ const start = async () => {
         },
         validationRules: [
             depthLimit(5),
-            createComplexityLimitRule(1000, {
-                onCost: (cost: Number) => console.log(`Query Cost : ${cost}`)
+            queryComplexity({
+
+                estimators: [
+                    simpleEstimator({ defaultComplexity: 1 })
+                ],
+                maximumComplexity: 1000,
+                onComplete: (complexity: number) => {
+                    console.log(`Query Complexity: ${complexity}`)
+                }
             })
         ]
     })
