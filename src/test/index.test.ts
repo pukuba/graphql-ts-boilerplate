@@ -10,9 +10,7 @@ describe(`Server Init Test`, () => {
             }
         `
         const res = await request(app)
-            .post("/api")
-            .set("Content-Type", "application/json")
-            .send(JSON.stringify({ query }))
+            .get(`/api?query=${query}`)
             .expect(200)
         assert.strictEqual(res.body.data.test, "Server On")
     })
@@ -23,9 +21,7 @@ describe(`Server Init Test`, () => {
             }
         `
         const res = await request(app)
-            .post("/api")
-            .set("Content-Type", "application/json")
-            .send(JSON.stringify({ query }))
+            .get(`/api?query=${query}`)
             .expect(400)
         assert.strict(Array.isArray(res.body.errors[0].locations))
         assert.strictEqual(res.body.errors[0].message, `Cannot query field "test1" on type "Query". Did you mean "test"?`)

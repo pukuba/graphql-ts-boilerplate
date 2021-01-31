@@ -1,4 +1,4 @@
-import Query from 'resolvers/Query'
+import Query from "resolvers/Query"
 
 export default {
     Query
