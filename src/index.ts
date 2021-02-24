@@ -16,7 +16,7 @@ import resolvers from "resolvers"
 const typeDefs = readFileSync("src/typeDefs.graphql", "utf-8")
 
 const app = express()
-app.use(cors())
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.get("/graphql", expressPlayground({ endpoint: "/api" }))
