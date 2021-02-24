@@ -11,7 +11,6 @@ import DB from "config/connectDB"
 import express from "express"
 import expressPlayground from "graphql-playground-middleware-express"
 import bodyParser from "body-parser"
-import cors from "cors"
 import resolvers from "resolvers"
 const typeDefs = readFileSync("src/typeDefs.graphql", "utf-8")
 
