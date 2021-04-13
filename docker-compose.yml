@@ -17,8 +17,6 @@ services:
     restart: "unless-stopped"
   express:
     container_name: express
-    volumes:
-      - ./media:/server/media
     build:
       context: ./
     restart: "unless-stopped"
