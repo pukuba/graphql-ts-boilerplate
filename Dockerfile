@@ -6,9 +6,8 @@ WORKDIR /server
 
 ADD ./ /server
 
-RUN npm install
-
-RUN npm run build
+RUN npm install; \
+    npm run build
 
 EXPOSE 3000
 
