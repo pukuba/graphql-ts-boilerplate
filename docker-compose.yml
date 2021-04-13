@@ -1,6 +1,12 @@
 version: "3.8"
 
 services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    volumes:
+      - /usr/local/var/mongodb:/data/db
+    restart: "unless-stopped"
   proxy:
     image: nginx:latest
     container_name: proxy
@@ -11,6 +17,8 @@ services:
     restart: "unless-stopped"
   express:
     container_name: express
+    volumes:
+      - ./media:/server/media
     build:
       context: ./
     restart: "unless-stopped"
