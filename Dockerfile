@@ -6,9 +6,9 @@ WORKDIR /server
 
 ADD ./ /server
 
-RUN npm install; \
-    npm run build
+RUN yarn install; \
+    yarn run build
 
 EXPOSE 3000
 
-CMD [ "npm", "run", "on" ]
+CMD [ "yarn", "run", "on" ]

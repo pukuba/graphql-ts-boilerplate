@@ -1,23 +1,22 @@
 import dotenv from "dotenv"
 dotenv.config()
+import env from "config/env"
 
 import { ApolloServer, ApolloError } from "apollo-server-express"
 import { readFileSync } from "fs"
 import { createServer } from "http"
-import queryComplexity, { simpleEstimator } from 'graphql-query-complexity'
+import queryComplexity, { simpleEstimator } from "graphql-query-complexity"
 import depthLimit from "graphql-depth-limit"
 import DB from "config/connectDB"
 
 import express from "express"
 import expressPlayground from "graphql-playground-middleware-express"
-import bodyParser from "body-parser"
+import { bodyParserGraphQL } from "body-parser-graphql"
 import resolvers from "resolvers"
 const typeDefs = readFileSync("src/typeDefs.graphql", "utf-8")
 
 const app = express()
-
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParserGraphQL())
 app.get("/graphql", expressPlayground({ endpoint: "/api" }))
 
 const start = async () => {
@@ -41,7 +40,6 @@ const start = async () => {
                 createError: (max: number, actual: number) => {
                     return new ApolloError(`Query is too complex: ${actual}. Maximum allowed complexity: ${max}`);
                 },
-
             })
         ]
     })
@@ -53,8 +51,8 @@ const start = async () => {
 
     const httpServer = createServer(app)
     httpServer.timeout = 5000
-    httpServer.listen({ port: process.env.PORT || 3000 }, () => {
-        console.log(`GraphQL Server Running at http://localhost:${process.env.PORT || 3000}/api`)
+    httpServer.listen({ port: env.PORT || 3000 }, () => {
+        console.log(`GraphQL Server Running at http://localhost:${env.PORT || 3000}/api`)
     })
 }
 
