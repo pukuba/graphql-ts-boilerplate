@@ -19,4 +19,6 @@ services:
     container_name: express
     build:
       context: ./
+    volumes:
+      - ./file:/server/file
     restart: "unless-stopped"
