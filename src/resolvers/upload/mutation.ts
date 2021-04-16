@@ -22,8 +22,7 @@ export const imgUpload = async (
     try {
         const stream = img.createReadStream()
         const originalPath = `${path}/${img.filename}`
-        const result = await uploadStream(stream, originalPath)
-        console.log(result)
+        await uploadStream(stream, originalPath)
         return true
     } catch {
         return false
