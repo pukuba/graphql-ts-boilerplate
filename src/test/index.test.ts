@@ -1,18 +1,22 @@
 import assert from "assert"
-import app from "index"
-import request from "supertest"
+import client from "test"
+import { join } from "path"
+import { createReadStream } from "fs"
+import { parse } from "lib"
 
 describe(`Server Init Test`, () => {
+
     it(`Server Running Test-1`, async () => {
         const query = `
             query{
                 test
             }
         `
-        const res = await request(app)
-            .get(`/api?query=${query}`)
-            .expect(200)
-        assert.strictEqual(res.body.data.test, "Server On")
+        const res = await client.query({
+            query
+        })
+        const data = parse(res)
+        assert.strictEqual(data.data.test, "Server On")
     })
     it(`Server Running Test-2`, async () => {
         const query = `
@@ -20,10 +24,33 @@ describe(`Server Init Test`, () => {
                 test1
             }
         `
-        const res = await request(app)
-            .get(`/api?query=${query}`)
-            .expect(400)
-        assert.strict(Array.isArray(res.body.errors[0].locations))
-        assert.strictEqual(res.body.errors[0].message, `Cannot query field "test1" on type "Query". Did you mean "test"?`)
+        const res = await client.query({
+            query
+        })
+        const data = parse(res)
+        assert.strictEqual(data.errors[0].message, 'Cannot query field "test1" on type "Query". Did you mean "test"?')
     })
+    it(`file Upload Test`, async () => {
+
+        const path = join(__dirname, "./file/github_profile.jpeg")
+        const file = createReadStream(path)
+        const query = `
+            mutation imgUpload($file: Upload) {
+                imgUpload(file: $file)
+            }
+        `
+        const res = await client.mutate({
+            mutation: query,
+            variables: {
+                file: {
+                    createReadStream: () => file,
+                    filename: "github_profile.jpeg",
+                    mimetype: "image/jpeg",
+                    encoding: "7bit"
+                }
+            }
+        })
+        const data = parse(res)
+        assert.strictEqual(data.data.imgUpload, true)
+    }).timeout(5000)
 })
