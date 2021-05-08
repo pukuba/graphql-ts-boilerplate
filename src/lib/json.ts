@@ -1,1 +1,1 @@
-export const parse = (obj: Object) => JSON.parse(JSON.stringify(obj))
+export const parse = (obj: any) => JSON.parse(JSON.stringify(obj))
