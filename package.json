@@ -7,7 +7,8 @@
     "test": "NODE_PATH=src/ ts-mocha -p ./tsconfig.json src/test/*.test.ts --exit",
     "build": "tsc -p .",
     "start": "NODE_PATH=src/ nodemon --exec ts-node src/index.ts",
-    "on": "NODE_PATH=dist/ node dist/index.js"
+    "on": "NODE_PATH=dist/ node dist/index.js",
+    "gen-docs": "rm -rf docs && graphdoc -s ./src/typeDefs.graphql -o ./docs"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "graphql-depth-limit": "^1.1.0",
     "graphql-playground-middleware-express": "^1.7.22",
     "graphql-query-complexity": "^0.7.2",
+    "graphql-voyager": "^1.0.0-rc.31",
     "http": "0.0.1-security",
     "mocha": "^8.2.1",
     "mongodb": "^3.6.3",
