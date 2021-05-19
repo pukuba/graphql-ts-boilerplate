@@ -32,10 +32,10 @@ describe(`Server Init Test`, () => {
     })
     it(`file Upload Test`, async () => {
 
-        const path = join(__dirname, "./file/github_profile.jpeg")
+        const path = join(__dirname, "file", "github_profile.jpeg")
         const file = createReadStream(path)
         const query = `
-            mutation imgUpload($file: Upload) {
+            mutation imgUpload($file: FileUpload) {
                 imgUpload(file: $file)
             }
         `
