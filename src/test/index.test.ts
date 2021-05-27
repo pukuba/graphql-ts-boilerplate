@@ -1,7 +1,28 @@
 import assert from "assert"
-import fetch from "node-fetch"
+import request from "supertest"
+import app from "test"
+import { createReadStream } from "fs"
+import { join, extname } from "path"
+import { contentType } from 'mime-types'
 
-const endpoint = "http://localhost:3000/api"
+const graphql = (query: string, variables: { [x: string]: any } = {}) => {
+    const map = Object.assign({}, Object.keys(variables).map(key => [`variables.${key}`]));
+    const response = request(app)
+        .post('/api')
+        .field('operations', JSON.stringify({ query }))
+        .field('map', JSON.stringify(map))
+
+    Object.values(variables).forEach((value, i) => {
+        if (contentType(extname(value))) {
+            response.attach(`${i}`, value)
+        } else {
+            response.field(`${i}`, value)
+        }
+    })
+    return response
+}
+
+
 describe(`Server Init Test`, () => {
 
     it(`Server Running Test-1`, async () => {
@@ -10,11 +31,9 @@ describe(`Server Init Test`, () => {
                 test
             }
         `
-        const res = await fetch(`${endpoint}?query=${query}`, {
-            method: "GET"
-        })
-        const { data } = await res.json()
-        assert.strictEqual(data.test, "Server On")
+        await request(app)
+            .get(`/api?query=${query}`)
+            .expect(200)
     })
     it(`Server Running Test-2`, async () => {
         const query = `
@@ -22,10 +41,18 @@ describe(`Server Init Test`, () => {
                 test1
             }
         `
-        const res = await fetch(`${endpoint}?query=${query}`, {
-            method: "GET"
-        })
-        const data = await res.json()
-        assert.strictEqual(data.errors[0].message, 'Cannot query field "test1" on type "Query". Did you mean "test"?')
+        const { body } = await request(app)
+            .get(`/api?query=${query}`)
+            .expect(400)
+        assert.strictEqual(body.errors[0].message, 'Cannot query field "test1" on type "Query". Did you mean "test"?')
+    })
+
+    it(`Server Running Test-3`, async () => {
+        const { body } = await graphql(`
+            mutation($file: FileUpload){
+                imgUpload(file: $file)
+            }
+        `, { file: __dirname + '/github_profile.jpeg' })
+        assert.strictEqual(body.data.imgUpload, true)
     })
 })
