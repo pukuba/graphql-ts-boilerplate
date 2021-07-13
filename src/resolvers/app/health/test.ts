@@ -1,23 +1,17 @@
 import assert from "assert"
 import request from "supertest"
 import app from "test"
-import { createReadStream } from "fs"
-import { join, extname } from "path"
-import { contentType } from 'mime-types'
 
-const graphql = (query: string, variables: { [x: string]: any } = {}) => {
-    const map = Object.assign({}, Object.keys(variables).map(key => [`variables.${key}`]));
+const fileUpload = (query: string, variables: { [x: string]: string }) => {
+    const map = Object.assign({}, Object.keys(variables).map(key => [`variables.${key}`]))
     const response = request(app)
-        .post('/api')
-        .field('operations', JSON.stringify({ query }))
-        .field('map', JSON.stringify(map))
+        .post("/api")
+        .set("Content-Type", "multipart/form-data")
+        .field("operations", JSON.stringify({ query }))
+        .field("map", JSON.stringify(map))
 
     Object.values(variables).forEach((value, i) => {
-        if (contentType(extname(value))) {
-            response.attach(`${i}`, value)
-        } else {
-            response.field(`${i}`, value)
-        }
+        response.attach(`${i}`, value)
     })
     return response
 }
@@ -48,11 +42,11 @@ describe(`Server Init Test`, () => {
     })
 
     it(`Server Running Test-3`, async () => {
-        const { body } = await graphql(`
-            mutation($file: FileUpload){
-                imgUpload(file: $file)
+        const { body } = await fileUpload(`
+            mutation($file: Upload!){
+                fileUploadTest(file: $file)
             }
-        `, { file: __dirname + '/github_profile.jpeg' })
-        assert.strictEqual(body.data.imgUpload, true)
+        `, { file: 'src/test/test.jpeg' })
+        assert.strictEqual(body.data.fileUploadTest, true)
     })
 })

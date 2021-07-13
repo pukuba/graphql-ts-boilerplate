@@ -1,5 +1,5 @@
-import { Mutation as upload } from "resolvers/upload"
+import { Mutation as health } from "resolvers/app/health"
 
 export default {
-    ...upload
+    ...health
 }
