@@ -3,21 +3,22 @@ dotenv.config()
 import env from "config/env"
 
 import { express as voyagerMiddleware } from "graphql-voyager/middleware"
-import { ApolloServer, ApolloError } from "apollo-server-express"
+import { ApolloServer, GraphQLUpload } from "apollo-server-express"
 import { readFileSync } from "fs"
 import { createServer } from "http"
-import queryComplexity, { simpleEstimator } from "graphql-query-complexity"
 import depthLimit from "graphql-depth-limit"
 import DB from "config/connectDB"
+import { permissions } from "lib"
 import { makeExecutableSchema } from "@graphql-tools/schema"
+import * as graphqlScalars from 'graphql-scalars'
 import { applyMiddleware } from "graphql-middleware"
-import { permissions } from "lib/permissions"
+
 import express from "express"
 import expressPlayground from "graphql-playground-middleware-express"
 import { bodyParserGraphQL } from "body-parser-graphql"
 
 import resolvers from "resolvers"
-const typeDefs = readFileSync("src/typeDefs.graphql", "utf-8")
+const typeDefsGraphQL = readFileSync("src/typeDefs.graphql", "utf-8")
 
 const app = express()
 app.use(bodyParserGraphQL())
@@ -26,8 +27,15 @@ app.use("/graphql", expressPlayground({ endpoint: "/api" }))
 app.use("/api-docs", express.static("docs"))
 
 const schema = makeExecutableSchema({
-    typeDefs,
-    resolvers
+    typeDefs: `
+        ${graphqlScalars.typeDefs.join('\n')}
+        ${typeDefsGraphQL}
+    `,
+    resolvers: {
+        ...resolvers,
+        Upload: GraphQLUpload as import("graphql").GraphQLScalarType,
+        ...graphqlScalars.resolvers
+    }
 })
 
 const start = async () => {
@@ -39,18 +47,6 @@ const start = async () => {
         },
         validationRules: [
             depthLimit(8),
-            queryComplexity({
-                estimators: [
-                    simpleEstimator({ defaultComplexity: 1 })
-                ],
-                maximumComplexity: 1000,
-                onComplete: (complexity: number) => {
-                    console.log(`Query Complexity: ${complexity}`)
-                },
-                createError: (max: number, actual: number) => {
-                    return new ApolloError(`Query is too complex: ${actual}. Maximum allowed complexity: ${max}`);
-                },
-            })
         ]
     })
 
