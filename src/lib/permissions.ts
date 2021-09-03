@@ -13,4 +13,4 @@ export const permissions = shield({
     Query: {
 
     }
-})
+}, { allowExternalErrors: true })

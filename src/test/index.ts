@@ -3,7 +3,6 @@ dotenv.config()
 
 import { express as voyagerMiddleware } from "graphql-voyager/middleware"
 import { ApolloServer, GraphQLUpload } from "apollo-server-express"
-import { readFileSync } from "fs"
 import { createServer } from "http"
 import depthLimit from "graphql-depth-limit"
 import DB from "config/connectDB"
@@ -17,6 +16,7 @@ import expressPlayground from "graphql-playground-middleware-express"
 import { bodyParserGraphQL } from "body-parser-graphql"
 import resolvers from "resolvers"
 
+import { customScalar } from "config/scalars"
 import { loadFilesSync } from "@graphql-tools/load-files"
 const typeDefs = loadFilesSync("src/**/*.graphql")
 
@@ -33,6 +33,7 @@ const schema = makeExecutableSchema({
         ${typeDefs}
     `,
     resolvers: {
+        ...customScalar,
         ...resolvers,
         Upload: GraphQLUpload as import("graphql").GraphQLScalarType,
         ...graphqlScalars.resolvers

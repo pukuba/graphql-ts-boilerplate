@@ -4,7 +4,6 @@ import env from "config/env"
 
 import { express as voyagerMiddleware } from "graphql-voyager/middleware"
 import { ApolloServer, GraphQLUpload } from "apollo-server-express"
-import { readFileSync } from "fs"
 import { createServer } from "http"
 import depthLimit from "graphql-depth-limit"
 import DB from "config/connectDB"
@@ -13,6 +12,7 @@ import { makeExecutableSchema } from "@graphql-tools/schema"
 import * as graphqlScalars from 'graphql-scalars'
 import { applyMiddleware } from "graphql-middleware"
 
+import { customScalar } from "config/scalars"
 import { loadFilesSync } from "@graphql-tools/load-files"
 const typeDefs = loadFilesSync("src/**/*.graphql")
 
@@ -36,6 +36,7 @@ const schema = makeExecutableSchema({
     `,
     resolvers: {
         ...resolvers,
+        ...customScalar,
         Upload: GraphQLUpload as import("graphql").GraphQLScalarType,
         ...graphqlScalars.resolvers
     }

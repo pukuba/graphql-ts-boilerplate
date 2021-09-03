@@ -14,10 +14,8 @@ export const uploadStream = (stream: ReadStream, path: string) =>
             .on('finish', resolve)
     })
 
-const validImageExtensions = [".jpg", ".jpeg", ".png"]
-
 export const isValidImage = (fileName: String) => {
-    for (const extension of validImageExtensions) {
+    for (const extension of [".jpg", ".jpeg", ".png"]) {
         if (fileName.endsWith(extension) === true) {
             return true
         }
