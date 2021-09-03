@@ -44,9 +44,13 @@ describe(`Server Init Test`, () => {
     it(`Server Running Test-3`, async () => {
         const { body } = await fileUpload(`
             mutation($file: Upload!){
-                fileUploadTest(file: $file)
+                fileUploadTest(
+                    input: {
+                        file: $file
+                    }
+                )
             }
         `, { file: 'src/test/test.jpeg' })
-        assert.strictEqual(body.data.fileUploadTest, true)
+        assert.strictEqual(body.data.fileUploadTest, "http://localhost/file/test.jpeg")
     })
 })

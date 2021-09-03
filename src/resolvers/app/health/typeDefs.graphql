@@ -2,6 +2,10 @@ type Query{
     test: String!
 }
 
+input FileUploadTestInput {
+    file: Upload!
+}
+
 type Mutation{
-    fileUploadTest(file: Upload!): Boolean!
+    fileUploadTest(input: FileUploadTestInput!): URL
 }
