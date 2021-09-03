@@ -1,5 +1,3 @@
-scalar Upload
-
 type Query{
     test: String!
 }

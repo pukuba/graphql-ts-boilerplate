@@ -6,3 +6,9 @@ export interface File {
     encoding: string
     createReadStream: () => ReadStream
 }
+
+import { Db } from "mongodb"
+
+export interface Context {
+    db: Db
+}

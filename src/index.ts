@@ -13,12 +13,14 @@ import { makeExecutableSchema } from "@graphql-tools/schema"
 import * as graphqlScalars from 'graphql-scalars'
 import { applyMiddleware } from "graphql-middleware"
 
+import { loadFilesSync } from "@graphql-tools/load-files"
+const typeDefs = loadFilesSync("src/**/*.graphql")
+
 import express from "express"
 import expressPlayground from "graphql-playground-middleware-express"
 import { bodyParserGraphQL } from "body-parser-graphql"
 
 import resolvers from "resolvers"
-const typeDefsGraphQL = readFileSync("src/typeDefs.graphql", "utf-8")
 
 const app = express()
 app.use(bodyParserGraphQL())
@@ -28,8 +30,9 @@ app.use("/api-docs", express.static("docs"))
 
 const schema = makeExecutableSchema({
     typeDefs: `
+        scalar Upload   
         ${graphqlScalars.typeDefs.join('\n')}
-        ${typeDefsGraphQL}
+        ${typeDefs}
     `,
     resolvers: {
         ...resolvers,

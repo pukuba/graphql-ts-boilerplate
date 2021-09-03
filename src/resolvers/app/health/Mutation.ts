@@ -1,30 +1,18 @@
 import { uploadStream, isValidImage } from "lib"
-import { File } from "config/types"
-import { Db } from "mongodb"
-import { join } from "path"
+import { Context } from "config/types"
 import { ApolloError } from "apollo-server-express"
-
-const path = join(__dirname, "../../../../file")
-export const fileUploadTest = async (
-    parent: void, {
-        file
-    }: {
-        file: File
-    }, {
-        db
-    }: {
-        db: Db
-    }) => {
-    const img = await file
+import { FileUploadTestInput } from "resolvers/app/health/models"
+export const fileUploadTest = async (parent: void, args: FileUploadTestInput, ctx: Context) => {
+    const img = await args.input.file
     if (false === isValidImage(img.filename)) {
-        throw new ApolloError("ile extension is not valid")
+        throw new ApolloError("file extension is not valid")
     }
     try {
         const stream = img.createReadStream()
-        const originalPath = `${path}/${img.filename}`
+        const originalPath = `file/${img.filename}`
         await uploadStream(stream, originalPath)
-        return true
-    } catch {
-        return false
+        return originalPath
+    } catch (e) {
+        throw new ApolloError(e)
     }
 }

@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/pukuba/graphql-ts-boilerplate#readme",
   "dependencies": {
+    "@graphql-tools/load-files": "^6.4.0",
     "@graphql-tools/schema": "^7.1.5",
     "@types/mime-types": "^2.1.0",
     "@types/supertest": "^2.0.11",
