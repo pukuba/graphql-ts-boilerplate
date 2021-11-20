@@ -1,6 +1,7 @@
 import dotenv from "dotenv"
 dotenv.config()
 
+import env from "config/env"
 import { express as voyagerMiddleware } from "graphql-voyager/middleware"
 import { ApolloServer } from "apollo-server-express"
 import { createServer } from "http"
@@ -46,6 +47,8 @@ export default (async () => {
             return { db }
         },
         validationRules: [depthLimit(8)],
+        debug: env.NODE_ENV !== "production",
+        introspection: env.NODE_ENV !== "production",
     })
 
     await server.start()
