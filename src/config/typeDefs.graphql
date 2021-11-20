@@ -1,1 +1,3 @@
-scalar Content
+type Mutation
+
+type Query
