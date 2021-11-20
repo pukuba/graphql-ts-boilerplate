@@ -9,6 +9,7 @@ import depthLimit from "graphql-depth-limit"
 import DB from "config/connectDB"
 import { permissions } from "lib"
 import { makeExecutableSchema } from "@graphql-tools/schema"
+import { GraphQLUpload } from "graphql-upload"
 import * as graphqlScalars from "graphql-scalars"
 import { applyMiddleware } from "graphql-middleware"
 
@@ -34,6 +35,7 @@ const schema = makeExecutableSchema({
     resolvers: {
         ...resolvers,
         ...graphqlScalars.resolvers,
+        Upload: GraphQLUpload,
     },
 })
 
