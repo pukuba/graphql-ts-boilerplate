@@ -1,4 +1,4 @@
-import env from "config/env"
+import { env } from "config"
 import { MongoClient, Db } from "mongodb"
 
 let db: Db | null = null
@@ -34,4 +34,4 @@ const connectDB = () => {
     return { get }
 }
 
-export default connectDB()
+export const mongoDB = connectDB()

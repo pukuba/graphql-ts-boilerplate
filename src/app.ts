@@ -1,12 +1,11 @@
 import dotenv from "dotenv"
 dotenv.config()
 
-import env from "config/env"
+import { env, mongoDB } from "config"
 import { express as voyagerMiddleware } from "graphql-voyager/middleware"
 import { ApolloServer } from "apollo-server-express"
 import { createServer } from "http"
 import depthLimit from "graphql-depth-limit"
-import DB from "config/connectDB"
 import { permissions } from "lib"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import { GraphQLUpload } from "graphql-upload"
@@ -40,7 +39,7 @@ const schema = makeExecutableSchema({
 })
 
 export default (async () => {
-    const db = await DB.get()
+    const db = await mongoDB.get()
     const server = new ApolloServer({
         schema: applyMiddleware(schema, permissions),
         context: () => {
