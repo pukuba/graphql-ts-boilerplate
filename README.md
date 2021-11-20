@@ -1,22 +1,11 @@
 # graphql-ts-boilerplate
+
 pukuba graphql-ts-boilerplate
 
+```docker
+docker build --tag was:latest .
 
-docker build
-``` docker
-docker-compose up -d --build
+docker stack deploy -c docker-compose.yml api
 ```
 
-## GraphQL Apollo Server 
-- Node.js
-    - TypeScript
-    - apollo-server-express
-    
-- Database
-    - MongoDB
-
-- WebServer
-    - Nginx
-
-- Test
-    - Mocha.JS
+## GraphQL Apollo Server
