@@ -22,7 +22,6 @@ services:
                     memory: "1g"
             mode: replicated
             replicas: 1
-        restart: "unless-stopped"
         healthcheck:
             test: ["CMD", "curl", "-f", "http://localhost/nginx-health"]
             interval: 10s
@@ -37,7 +36,6 @@ services:
         container_name: mongo
         volumes:
             - /usr/local/var/mongodb:/data/db
-        restart: "unless-stopped"
 
     express:
         container_name: express
