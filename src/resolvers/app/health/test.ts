@@ -1,56 +1,53 @@
-import assert from "assert"
+import { deepStrictEqual as deepEqual } from "assert"
 import request from "supertest"
-import app from "test"
+import appPromise from "app"
 
-const fileUpload = (query: string, variables: { [x: string]: string }) => {
-    const map = Object.assign({}, Object.keys(variables).map(key => [`variables.${key}`]))
-    const response = request(app)
-        .post("/api")
-        .set("Content-Type", "multipart/form-data")
-        .field("operations", JSON.stringify({ query }))
-        .field("map", JSON.stringify(map))
-
-    Object.values(variables).forEach((value, i) => {
-        response.attach(`${i}`, value)
-    })
-    return response
-}
-
-
-describe(`Server Init Test`, () => {
-
-    it(`Server Running Test-1`, async () => {
-        const query = `
-            query{
-                test
-            }
-        `
-        await request(app)
-            .get(`/api?query=${query}`)
-            .expect(200)
-    })
-    it(`Server Running Test-2`, async () => {
-        const query = `
-            query{
-                test1
-            }
-        `
-        const { body } = await request(app)
-            .get(`/api?query=${query}`)
-            .expect(400)
-        assert.strictEqual(body.errors[0].message, 'Cannot query field "test1" on type "Query". Did you mean "test"?')
+describe(`Server running test`, () => {
+    let app: any
+    before(async () => {
+        app = await appPromise
     })
 
-    it(`Server Running Test-3`, async () => {
-        const { body } = await fileUpload(`
-            mutation($file: Upload!){
-                fileUploadTest(
-                    input: {
-                        file: $file
-                    }
-                )
-            }
-        `, { file: 'src/test/test.jpeg' })
-        assert.strictEqual(body.data.fileUploadTest, "http://localhost/file/test.jpeg")
+    describe("Apollo-Server-Express Core", () => {
+        it("should return http status code 200", async () => {
+            await request(app)
+                .get("/.well-known/apollo/server-health")
+                .expect(200, { status: "pass" })
+        })
+    })
+
+    describe("Query testQuery", () => {
+        it(`Should be return http status code 200`, async () => {
+            const query = `{testQuery(input:1)}`
+            await request(app).get(`/api?query=${query}`).expect(200)
+        })
+        it(`Should be return http status code 400`, async () => {
+            const query = `query{testQuery1(input:1)}`
+            const { body } = await request(app).get(`/api?query=${query}`).expect(400)
+            deepEqual(
+                body.errors[0].message,
+                'Cannot query field "testQuery1" on type "Query". Did you mean "testQuery"?'
+            )
+        })
+    })
+
+    describe("Mutation testMutation", () => {
+        it(`Should be return http status code 200`, async () => {
+            const query = `mutation{testMutation(input:1)}`
+            await request(app)
+                .post(`/api`)
+                .set("Content-Type", "application/json")
+                .send(JSON.stringify({ query }))
+                .expect(200)
+        })
+        it(`Should be return http status code 400`, async () => {
+            const query = `mutation{testMutation(input:"1")}`
+            const { body } = await request(app)
+                .post(`/api`)
+                .set("Content-Type", "application/json")
+                .send(JSON.stringify({ query }))
+                .expect(400)
+            deepEqual(body.errors[0].message, 'Expected type Int!, found "1".')
+        })
     })
 })

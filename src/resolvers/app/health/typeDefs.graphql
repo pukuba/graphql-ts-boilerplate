@@ -1,11 +1,7 @@
-type Query{
-    test: String!
+extend type Query {
+    testQuery(input: Int!): Int!
 }
 
-input FileUploadTestInput {
-    file: Upload!
-}
-
-type Mutation{
-    fileUploadTest(input: FileUploadTestInput!): URL
+extend type Mutation {
+    testMutation(input: Int!): Int!
 }
