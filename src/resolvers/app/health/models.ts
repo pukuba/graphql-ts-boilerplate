@@ -1,3 +1,5 @@
-export interface InputTest {
-	input: number
+export interface HealthMutationInput {
+	input: {
+		data: "ping"
+	}
 }

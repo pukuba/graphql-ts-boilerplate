@@ -1,7 +1,11 @@
 extend type Query {
-    testQuery(input: Int!): Int!
+    healthLive: DateTime!
 }
 
 extend type Mutation {
-    testMutation(input: Int!): Int!
+    healthCheck(input: HealthCheckInput): String!
+}
+
+input HealthCheckInput {
+    data: String! @constraint(pattern: "^ping$")
 }

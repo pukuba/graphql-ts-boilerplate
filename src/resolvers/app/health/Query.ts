@@ -1,4 +1,3 @@
-import { InputTest } from "resolvers/app/health/models"
-export const testQuery = (parent: void, args: InputTest) => {
-	return args.input
+export const healthLive = () => {
+	return Date.now()
 }

@@ -10,6 +10,7 @@ import { permissions } from "lib"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import { GraphQLUpload } from "graphql-upload"
 import { typeDefs as ScalarNameTypeDefinition, resolvers as scalarResolvers } from "graphql-scalars"
+import { constraintDirective, constraintDirectiveTypeDefs } from "graphql-constraint-directive"
 import { applyMiddleware } from "graphql-middleware"
 
 import { loadFilesSync } from "@graphql-tools/load-files"
@@ -26,14 +27,16 @@ app.use(bodyParserGraphQL())
 app.use("/voyager", voyagerMiddleware({ endpointUrl: "/api" }))
 app.use("/graphql", expressPlayground({ endpoint: "/api" }))
 
-const schema = makeExecutableSchema({
-	typeDefs: [...typeDefs, ...ScalarNameTypeDefinition],
-	resolvers: {
-		...resolvers,
-		...scalarResolvers,
-		Upload: GraphQLUpload,
-	},
-})
+const schema = constraintDirective()(
+	makeExecutableSchema({
+		typeDefs: [...typeDefs, ...ScalarNameTypeDefinition, constraintDirectiveTypeDefs],
+		resolvers: {
+			...resolvers,
+			...scalarResolvers,
+			Upload: GraphQLUpload,
+		},
+	})
+)
 
 export default (async () => {
 	const db = await mongoDB.get()
