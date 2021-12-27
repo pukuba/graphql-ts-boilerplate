@@ -4,12 +4,12 @@ dotenv.config()
 import { env, mongoDB } from "config"
 import { express as voyagerMiddleware } from "graphql-voyager/middleware"
 import { ApolloServer } from "apollo-server-express"
-import { createServer } from "http"
+import { createServer, Server } from "http"
 import depthLimit from "graphql-depth-limit"
 import { permissions } from "lib"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import { GraphQLUpload } from "graphql-upload"
-import * as graphqlScalars from "graphql-scalars"
+import { typeDefs as ScalarNameTypeDefinition, resolvers as scalarResolvers } from "graphql-scalars"
 import { applyMiddleware } from "graphql-middleware"
 
 import { loadFilesSync } from "@graphql-tools/load-files"
@@ -27,37 +27,34 @@ app.use("/voyager", voyagerMiddleware({ endpointUrl: "/api" }))
 app.use("/graphql", expressPlayground({ endpoint: "/api" }))
 
 const schema = makeExecutableSchema({
-    typeDefs: `
-        ${graphqlScalars.typeDefs.join("\n")}
-        ${typeDefs}
-    `,
-    resolvers: {
-        ...resolvers,
-        ...graphqlScalars.resolvers,
-        Upload: GraphQLUpload,
-    },
+	typeDefs: [...typeDefs, ...ScalarNameTypeDefinition],
+	resolvers: {
+		...resolvers,
+		...scalarResolvers,
+		Upload: GraphQLUpload,
+	},
 })
 
 export default (async () => {
-    const db = await mongoDB.get()
-    const server = new ApolloServer({
-        schema: applyMiddleware(schema, permissions),
-        context: () => {
-            return { db }
-        },
-        validationRules: [depthLimit(8)],
-        debug: env.NODE_ENV !== "production",
-        introspection: env.NODE_ENV !== "production",
-    })
+	const db = await mongoDB.get()
+	const server = new ApolloServer({
+		schema: applyMiddleware(schema, permissions),
+		context: () => {
+			return { db }
+		},
+		validationRules: [depthLimit(8)],
+		debug: env.NODE_ENV !== "production",
+		introspection: env.NODE_ENV !== "production",
+	})
 
-    await server.start()
+	await server.start()
 
-    server.applyMiddleware({
-        app,
-        path: "/api",
-    })
+	server.applyMiddleware({
+		app,
+		path: "/api",
+	})
 
-    const httpServer = createServer(app)
-    httpServer.timeout = 5000
-    return httpServer
+	const httpServer = createServer(app)
+	httpServer.timeout = 5000
+	return httpServer as Server
 })()

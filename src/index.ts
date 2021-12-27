@@ -1,7 +1,8 @@
 import app from "app"
 import { env } from "config"
 ;(async () => {
-    ;(await app).listen(env.PORT, () => {
-        console.log(`server running http://localhost:${env.PORT}/graphql`)
-    })
+	const server = await app
+	server.listen(env.PORT, () => {
+		console.log(`server running http://localhost:${env.PORT}/graphql`)
+	})
 })()

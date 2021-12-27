@@ -1,3 +1,3 @@
 export interface InputTest {
-    input: number
+	input: number
 }
