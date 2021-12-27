@@ -1950,10 +1950,10 @@ graphql-playground-middleware-express@^1.7.23:
   dependencies:
     graphql-playground-html "^1.6.30"
 
-graphql-query-complexity@^0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.7.2.tgz#7fc6bb20930ab1b666ecf3bbfb24b65b6f08ecc4"
-  integrity sha512-+VgmrfxGEjHI3zuojWOR8bsz7Ycz/BZjNjxnlUieTz5DsB92WoIrYCSZdWG7UWZ3rfcA1Gb2Nf+wB80GsaZWuQ==
+graphql-query-complexity@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.11.0.tgz#6078e72a39a410bb5285673077565ec8ee127c6b"
+  integrity sha512-1Ns64a41XYLehYFxZwoEn7i7myUQPd/fLRZPZ73ULjln4VBWMwptzB8LiPWNaRHsTjLMkecZPeqmuKYNXrFIGA==
   dependencies:
     lodash.get "^4.4.2"
 

@@ -12,6 +12,7 @@ import { GraphQLUpload } from "graphql-upload"
 import { typeDefs as ScalarNameTypeDefinition, resolvers as scalarResolvers } from "graphql-scalars"
 import { constraintDirective, constraintDirectiveTypeDefs } from "graphql-constraint-directive"
 import { applyMiddleware } from "graphql-middleware"
+import { simpleEstimator, createComplexityRule } from "graphql-query-complexity"
 
 import { loadFilesSync } from "@graphql-tools/load-files"
 const typeDefs = loadFilesSync("src/**/*.graphql")
@@ -47,7 +48,13 @@ export default (async () => {
 		context: () => {
 			return { db }
 		},
-		validationRules: [depthLimit(8)],
+		validationRules: [
+			depthLimit(8),
+			createComplexityRule({
+				estimators: [simpleEstimator({ defaultComplexity: 1 })],
+				maximumComplexity: 1000,
+			}),
+		],
 		debug: env.NODE_ENV !== "production",
 		introspection: env.NODE_ENV !== "production",
 	})
