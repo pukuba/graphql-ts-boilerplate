@@ -24,8 +24,10 @@ import resolvers from "resolvers"
 
 const app = express()
 app.use(bodyParserGraphQL())
-app.use("/voyager", voyagerMiddleware({ endpointUrl: "/api" }))
-app.use("/graphql", expressPlayground({ endpoint: "/api" }))
+if (env.NODE_ENV !== "production") {
+	app.use("/voyager", voyagerMiddleware({ endpointUrl: "/api" }))
+	app.use("/graphql", expressPlayground({ endpoint: "/api" }))
+}
 
 const schema = constraintDirective()(
 	makeExecutableSchema({
