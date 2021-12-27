@@ -4,7 +4,7 @@
   "description": "graphql-ts-boilerplate",
   "main": "src/index.ts",
   "scripts": {
-    "test": "yarn lint && NODE_PATH=src/ ts-mocha -p ./tsconfig.json src/**/*test.ts --exit",
+    "test": "yarn lint && NODE_PATH=src/ mocha --require ts-node/register --timeout 100000 src/**/test.ts --exit --files",
     "lint": "eslint **/*.ts",
     "lint:fix": "eslint '**/*.ts' --quiet --fix",
     "build": "tsc -p .",
