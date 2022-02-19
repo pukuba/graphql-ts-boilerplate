@@ -17,6 +17,9 @@ export type Scalars = {
   /** A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/. */
   EmailAddress: any;
   HealthCheck: any;
+  Password: any;
+  /** A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction. */
+  JWT: any;
   /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
   BigInt: any;
   /** The `Byte` scalar type represents byte value as a Buffer */
@@ -91,8 +94,6 @@ export type Scalars = {
   JSON: any;
   /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSONObject: any;
-  /** A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction. */
-  JWT: any;
   /** A field whose value is a valid decimal degrees latitude number (53.471): https://en.wikipedia.org/wiki/Latitude */
   Latitude: any;
   /** A local date string (i.e., with no associated timezone) in `YYYY-MM-DD` format, e.g. `2020-01-01`. */
@@ -190,6 +191,7 @@ export type User = {
 export type Mutation = {
   __typename?: 'Mutation';
   healthCheck: Scalars['String'];
+  register: Scalars['JWT'];
 };
 
 
@@ -197,8 +199,18 @@ export type MutationHealthCheckArgs = {
   input: HealthCheckInput;
 };
 
+
+export type MutationRegisterArgs = {
+  input: RegisterInput;
+};
+
 export type HealthCheckInput = {
   data: Scalars['HealthCheck'];
+};
+
+export type RegisterInput = {
+  email: Scalars['EmailAddress'];
+  password: Scalars['Password'];
 };
 
 export enum CacheControlScope {
@@ -293,6 +305,9 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>;
   HealthCheckInput: HealthCheckInput;
   HealthCheck: ResolverTypeWrapper<Scalars['HealthCheck']>;
+  RegisterInput: RegisterInput;
+  Password: ResolverTypeWrapper<Scalars['Password']>;
+  JWT: ResolverTypeWrapper<Scalars['JWT']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
@@ -316,7 +331,6 @@ export type ResolversTypes = {
   ISO8601Duration: ResolverTypeWrapper<Scalars['ISO8601Duration']>;
   JSON: ResolverTypeWrapper<Scalars['JSON']>;
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']>;
-  JWT: ResolverTypeWrapper<Scalars['JWT']>;
   Latitude: ResolverTypeWrapper<Scalars['Latitude']>;
   LocalDate: ResolverTypeWrapper<Scalars['LocalDate']>;
   LocalEndTime: ResolverTypeWrapper<Scalars['LocalEndTime']>;
@@ -365,6 +379,9 @@ export type ResolversParentTypes = {
   Mutation: {};
   HealthCheckInput: HealthCheckInput;
   HealthCheck: Scalars['HealthCheck'];
+  RegisterInput: RegisterInput;
+  Password: Scalars['Password'];
+  JWT: Scalars['JWT'];
   Boolean: Scalars['Boolean'];
   BigInt: Scalars['BigInt'];
   Byte: Scalars['Byte'];
@@ -387,7 +404,6 @@ export type ResolversParentTypes = {
   ISO8601Duration: Scalars['ISO8601Duration'];
   JSON: Scalars['JSON'];
   JSONObject: Scalars['JSONObject'];
-  JWT: Scalars['JWT'];
   Latitude: Scalars['Latitude'];
   LocalDate: Scalars['LocalDate'];
   LocalEndTime: Scalars['LocalEndTime'];
@@ -492,10 +508,19 @@ export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<Resolv
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   healthCheck?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationHealthCheckArgs, 'input'>>;
+  register?: Resolver<ResolversTypes['JWT'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'input'>>;
 };
 
 export interface HealthCheckScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['HealthCheck'], any> {
   name: 'HealthCheck';
+}
+
+export interface PasswordScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Password'], any> {
+  name: 'Password';
+}
+
+export interface JwtScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JWT'], any> {
+  name: 'JWT';
 }
 
 export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
@@ -575,10 +600,6 @@ export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 
 export interface JsonObjectScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSONObject'], any> {
   name: 'JSONObject';
-}
-
-export interface JwtScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JWT'], any> {
-  name: 'JWT';
 }
 
 export interface LatitudeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Latitude'], any> {
@@ -723,6 +744,8 @@ export type Resolvers<ContextType = any> = {
   EmailAddress?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
   HealthCheck?: GraphQLScalarType;
+  Password?: GraphQLScalarType;
+  JWT?: GraphQLScalarType;
   BigInt?: GraphQLScalarType;
   Byte?: GraphQLScalarType;
   Currency?: GraphQLScalarType;
@@ -742,7 +765,6 @@ export type Resolvers<ContextType = any> = {
   ISO8601Duration?: GraphQLScalarType;
   JSON?: GraphQLScalarType;
   JSONObject?: GraphQLScalarType;
-  JWT?: GraphQLScalarType;
   Latitude?: GraphQLScalarType;
   LocalDate?: GraphQLScalarType;
   LocalEndTime?: GraphQLScalarType;

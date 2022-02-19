@@ -9,6 +9,15 @@ extend type Query {
     isAuthorized: isAuthorizedPayload! @isAuthenticated
 }
 
+extend type Mutation {
+    register(input: RegisterInput!): JWT!
+}
+
+input RegisterInput {
+    email: EmailAddress!
+    password: String! @constraint(pattern:"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$", uniqueTypeName: "Password")
+}
+
 type User {
     email: EmailAddress!
     createdAt: DateTime!
