@@ -1,4 +1,5 @@
 import { ReadStream } from "fs"
+import { Request } from "express"
 
 export interface FileInput {
 	filename: string
@@ -8,7 +9,10 @@ export interface FileInput {
 }
 
 import { Db } from "mongodb"
+import { User } from "config"
 
 export interface Context {
 	db: Db
+	req: Request
+	user?: User
 }

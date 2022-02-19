@@ -14,6 +14,8 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: any;
+  /** A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/. */
+  EmailAddress: any;
   HealthCheck: any;
   /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
   BigInt: any;
@@ -46,8 +48,6 @@ export type Scalars = {
    *
    */
   Duration: any;
-  /** A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/. */
-  EmailAddress: any;
   /** A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier. */
   GUID: any;
   /** A field whose value is a hexadecimal: https://en.wikipedia.org/wiki/Hexadecimal. */
@@ -164,6 +164,27 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   healthLive: Scalars['DateTime'];
+  isAuthorized: IsAuthorizedPayload;
+};
+
+export type IsAuthorizedPayload = AuthorizationError | User;
+
+export type AuthorizationError = Error & {
+  __typename?: 'AuthorizationError';
+  message: Scalars['String'];
+  path: Scalars['String'];
+};
+
+export type Error = {
+  message: Scalars['String'];
+  path: Scalars['String'];
+};
+
+export type User = {
+  __typename?: 'User';
+  createdAt: Scalars['DateTime'];
+  email: Scalars['EmailAddress'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Mutation = {
@@ -263,10 +284,15 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
+  isAuthorizedPayload: ResolversTypes['AuthorizationError'] | ResolversTypes['User'];
+  AuthorizationError: ResolverTypeWrapper<AuthorizationError>;
+  Error: ResolversTypes['AuthorizationError'];
+  String: ResolverTypeWrapper<Scalars['String']>;
+  User: ResolverTypeWrapper<User>;
+  EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   Mutation: ResolverTypeWrapper<{}>;
   HealthCheckInput: HealthCheckInput;
   HealthCheck: ResolverTypeWrapper<Scalars['HealthCheck']>;
-  String: ResolverTypeWrapper<Scalars['String']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
@@ -275,7 +301,6 @@ export type ResolversTypes = {
   Date: ResolverTypeWrapper<Scalars['Date']>;
   DID: ResolverTypeWrapper<Scalars['DID']>;
   Duration: ResolverTypeWrapper<Scalars['Duration']>;
-  EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   File: ResolverTypeWrapper<File>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   GUID: ResolverTypeWrapper<Scalars['GUID']>;
@@ -331,10 +356,15 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Query: {};
   DateTime: Scalars['DateTime'];
+  isAuthorizedPayload: ResolversParentTypes['AuthorizationError'] | ResolversParentTypes['User'];
+  AuthorizationError: AuthorizationError;
+  Error: ResolversParentTypes['AuthorizationError'];
+  String: Scalars['String'];
+  User: User;
+  EmailAddress: Scalars['EmailAddress'];
   Mutation: {};
   HealthCheckInput: HealthCheckInput;
   HealthCheck: Scalars['HealthCheck'];
-  String: Scalars['String'];
   Boolean: Scalars['Boolean'];
   BigInt: Scalars['BigInt'];
   Byte: Scalars['Byte'];
@@ -342,7 +372,6 @@ export type ResolversParentTypes = {
   Date: Scalars['Date'];
   DID: Scalars['DID'];
   Duration: Scalars['Duration'];
-  EmailAddress: Scalars['EmailAddress'];
   File: File;
   Float: Scalars['Float'];
   GUID: Scalars['GUID'];
@@ -421,12 +450,44 @@ export type ConstraintDirectiveArgs = {
 
 export type ConstraintDirectiveResolver<Result, Parent, ContextType = any, Args = ConstraintDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
+export type IsAuthenticatedDirectiveArgs = { };
+
+export type IsAuthenticatedDirectiveResolver<Result, Parent, ContextType = any, Args = IsAuthenticatedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   healthLive?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  isAuthorized?: Resolver<ResolversTypes['isAuthorizedPayload'], ParentType, ContextType>;
 };
 
 export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
   name: 'DateTime';
+}
+
+export type IsAuthorizedPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['isAuthorizedPayload'] = ResolversParentTypes['isAuthorizedPayload']> = {
+  __resolveType: TypeResolveFn<'AuthorizationError' | 'User', ParentType, ContextType>;
+};
+
+export type AuthorizationErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthorizationError'] = ResolversParentTypes['AuthorizationError']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Error'] = ResolversParentTypes['Error']> = {
+  __resolveType: TypeResolveFn<'AuthorizationError', ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
+
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
+  name: 'EmailAddress';
 }
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -459,10 +520,6 @@ export interface DidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 
 export interface DurationScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Duration'], any> {
   name: 'Duration';
-}
-
-export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
-  name: 'EmailAddress';
 }
 
 export type FileResolvers<ContextType = any, ParentType extends ResolversParentTypes['File'] = ResolversParentTypes['File']> = {
@@ -659,6 +716,11 @@ export interface VoidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
+  isAuthorizedPayload?: IsAuthorizedPayloadResolvers<ContextType>;
+  AuthorizationError?: AuthorizationErrorResolvers<ContextType>;
+  Error?: ErrorResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
+  EmailAddress?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
   HealthCheck?: GraphQLScalarType;
   BigInt?: GraphQLScalarType;
@@ -667,7 +729,6 @@ export type Resolvers<ContextType = any> = {
   Date?: GraphQLScalarType;
   DID?: GraphQLScalarType;
   Duration?: GraphQLScalarType;
-  EmailAddress?: GraphQLScalarType;
   File?: FileResolvers<ContextType>;
   GUID?: GraphQLScalarType;
   Hexadecimal?: GraphQLScalarType;
@@ -720,4 +781,5 @@ export type Resolvers<ContextType = any> = {
 export type DirectiveResolvers<ContextType = any> = {
   cacheControl?: CacheControlDirectiveResolver<any, any, ContextType>;
   constraint?: ConstraintDirectiveResolver<any, any, ContextType>;
+  isAuthenticated?: IsAuthenticatedDirectiveResolver<any, any, ContextType>;
 };

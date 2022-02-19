@@ -6,13 +6,12 @@ import { express as voyagerMiddleware } from "graphql-voyager/middleware"
 import { ApolloServer } from "apollo-server-express"
 import { createServer, Server } from "http"
 import depthLimit from "graphql-depth-limit"
-import { permissions } from "lib"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import { GraphQLUpload } from "graphql-upload"
 import { typeDefs as ScalarNameTypeDefinition, resolvers as scalarResolvers } from "graphql-scalars"
 import { constraintDirective, constraintDirectiveTypeDefs } from "graphql-constraint-directive"
-import { applyMiddleware } from "graphql-middleware"
 
+import { directives } from "shared"
 import { loadFilesSync } from "@graphql-tools/load-files"
 const typeDefs = loadFilesSync("src/**/*.graphql")
 
@@ -43,9 +42,9 @@ const schema = constraintDirective()(
 export default (async () => {
 	const db = await mongoDB.get()
 	const server = new ApolloServer({
-		schema: applyMiddleware(schema, permissions),
-		context: () => {
-			return { db }
+		schema: Object.values(directives).reduce((schema, fn) => fn(schema), schema),
+		context: ({ req }) => {
+			return { db, req }
 		},
 		validationRules: [depthLimit(8)],
 		debug: env.NODE_ENV !== "production",

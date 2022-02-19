@@ -1,0 +1,18 @@
+type AuthorizationError implements Error {
+    message: String!
+    path: String!
+}
+
+union isAuthorizedPayload = AuthorizationError | User
+
+extend type Query {
+    isAuthorized: isAuthorizedPayload! @isAuthenticated
+}
+
+type User {
+    email: EmailAddress!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+directive @isAuthenticated on FIELD_DEFINITION

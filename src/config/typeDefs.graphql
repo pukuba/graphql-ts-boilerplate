@@ -20,3 +20,8 @@ directive @cacheControl(
     scope: CacheControlScope
     inheritMaxAge: Boolean
 ) on FIELD_DEFINITION | OBJECT | INTERFACE | UNION
+
+interface Error {
+    message: String!
+    path: String!
+}
