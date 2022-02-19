@@ -9,7 +9,7 @@ export const authDirectiveTransformer = (schema: GraphQLSchema) => {
 			const authDirective = getDirective(schema, fieldConfig, "isAuthenticated")?.[0]
 
 			if (authDirective) {
-				/* istanbul ignore if */
+				/* istanbul ignore next */
 				const { resolve = defaultFieldResolver } = fieldConfig
 				fieldConfig.resolve = async function (...args) {
 					const [parent, input, context, info] = args
@@ -17,7 +17,7 @@ export const authDirectiveTransformer = (schema: GraphQLSchema) => {
 					if (user === null) {
 						return {
 							__typename: "AuthorizationError",
-							message: "Unauthorized",
+							message: "Authorization token이 유효하지 않습니다",
 							path: info.fieldName,
 						}
 					}
