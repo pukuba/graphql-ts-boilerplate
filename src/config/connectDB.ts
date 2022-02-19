@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { env } from "config"
 import { MongoClient, Db } from "mongodb"
 
@@ -12,22 +14,18 @@ const connectDB = () => {
 			const _db = client.db()
 			return _db
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 			return null
 		}
 	}
 
 	const get = async () => {
-		try {
-			if (db != null) {
-				return db
-			} else {
-				console.log("getting new db connection")
-				db = await connect()
-				return db
-			}
-		} catch (e) {
-			return e
+		if (db !== null) {
+			return db
+		} else {
+			console.log("getting new db connection")
+			db = await connect()
+			return db
 		}
 	}
 
