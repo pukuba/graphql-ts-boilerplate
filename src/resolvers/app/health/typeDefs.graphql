@@ -3,9 +3,9 @@ extend type Query {
 }
 
 extend type Mutation {
-    healthCheck(input: HealthCheckInput): String!
+    healthCheck(input: HealthCheckInput!): String!
 }
 
 input HealthCheckInput {
-    data: String! @constraint(pattern: "^ping$")
+    data: String! @constraint(pattern: "^ping$", uniqueTypeName: "HealthCheck")
 }

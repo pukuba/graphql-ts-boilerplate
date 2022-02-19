@@ -1,6 +1,6 @@
 import { ReadStream } from "fs"
 
-export interface File {
+export interface FileInput {
 	filename: string
 	mimetype: string
 	encoding: string

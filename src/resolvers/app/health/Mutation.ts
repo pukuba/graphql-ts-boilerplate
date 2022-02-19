@@ -1,5 +1,5 @@
-import { HealthMutationInput } from "resolvers/app/health/models"
+import { MutationHealthCheckArgs } from "config"
 
-export const healthCheck = (parent: void, args: HealthMutationInput) => {
+export const healthCheck = (parent: void, args: MutationHealthCheckArgs) => {
 	return args.input.data === "ping" ? "pong" : null
 }

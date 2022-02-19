@@ -50,7 +50,7 @@ describe("Server running test", () => {
 				.send({ query, variables: { input: { data: "pong" } } })
 				.expect(400)
 			expect(body.errors[0].message).to.be.equal(
-				'Variable "$input" got invalid value "pong" at "input.data"; Expected type data_String_NotNull_pattern_ping. Must match ^ping$'
+				'Variable "$input" got invalid value "pong" at "input.data"; Expected type HealthCheck. Must match ^ping$'
 			)
 		})
 	})
