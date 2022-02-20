@@ -2,9 +2,9 @@ name: Run tests
 
 on: 
   push:
-    branches: [ master ]
+    branches: [ master, develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, develop ]
 
 jobs:
   build:
@@ -21,13 +21,14 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
 
     - name: Use MongoDB ${{ matrix.mongodb-version }}
       uses: supercharge/mongodb-github-action@1.7.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
 
-    - run: npm install
-    - run: npm test
+    - run: yarn install
+    - run: yarn test
       env:
         CI: true
