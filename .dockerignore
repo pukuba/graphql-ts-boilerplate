@@ -11,3 +11,4 @@ docker-compose.yml
 codegen.yml
 yarn-error.log
 README.md
+.github
