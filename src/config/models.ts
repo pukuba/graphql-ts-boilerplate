@@ -216,7 +216,7 @@ export type LoginInput = {
   password: Scalars['Password'];
 };
 
-export type LoginPayload = InvalidAccountError | LoginInfo;
+export type LoginPayload = InvalidAccountError | LoginInfo | RateLimitError;
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -244,6 +244,13 @@ export type Query = {
   __typename?: 'Query';
   healthLive: Scalars['DateTime'];
   isAuthorized: IsAuthorizedPayload;
+};
+
+export type RateLimitError = Error & {
+  __typename?: 'RateLimitError';
+  message: Scalars['String'];
+  path: Scalars['String'];
+  ttl: Scalars['UnsignedInt'];
 };
 
 export type RegisterInput = {
@@ -341,7 +348,7 @@ export type ResolversTypes = {
   DuplicateEmailError: ResolverTypeWrapper<DuplicateEmailError>;
   Duration: ResolverTypeWrapper<Scalars['Duration']>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
-  Error: ResolversTypes['AuthorizationError'] | ResolversTypes['DuplicateEmailError'] | ResolversTypes['InvalidAccountError'];
+  Error: ResolversTypes['AuthorizationError'] | ResolversTypes['DuplicateEmailError'] | ResolversTypes['InvalidAccountError'] | ResolversTypes['RateLimitError'];
   File: ResolverTypeWrapper<File>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   GUID: ResolverTypeWrapper<Scalars['GUID']>;
@@ -368,7 +375,7 @@ export type ResolversTypes = {
   LocalTime: ResolverTypeWrapper<Scalars['LocalTime']>;
   LoginInfo: ResolverTypeWrapper<LoginInfo>;
   LoginInput: LoginInput;
-  LoginPayload: ResolversTypes['InvalidAccountError'] | ResolversTypes['LoginInfo'];
+  LoginPayload: ResolversTypes['InvalidAccountError'] | ResolversTypes['LoginInfo'] | ResolversTypes['RateLimitError'];
   Long: ResolverTypeWrapper<Scalars['Long']>;
   Longitude: ResolverTypeWrapper<Scalars['Longitude']>;
   MAC: ResolverTypeWrapper<Scalars['MAC']>;
@@ -390,6 +397,7 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   RGB: ResolverTypeWrapper<Scalars['RGB']>;
   RGBA: ResolverTypeWrapper<Scalars['RGBA']>;
+  RateLimitError: ResolverTypeWrapper<RateLimitError>;
   RegisterInput: RegisterInput;
   RegisterPayload: ResolversTypes['DuplicateEmailError'] | ResolversTypes['User'];
   SafeInt: ResolverTypeWrapper<Scalars['SafeInt']>;
@@ -420,7 +428,7 @@ export type ResolversParentTypes = {
   DuplicateEmailError: DuplicateEmailError;
   Duration: Scalars['Duration'];
   EmailAddress: Scalars['EmailAddress'];
-  Error: ResolversParentTypes['AuthorizationError'] | ResolversParentTypes['DuplicateEmailError'] | ResolversParentTypes['InvalidAccountError'];
+  Error: ResolversParentTypes['AuthorizationError'] | ResolversParentTypes['DuplicateEmailError'] | ResolversParentTypes['InvalidAccountError'] | ResolversParentTypes['RateLimitError'];
   File: File;
   Float: Scalars['Float'];
   GUID: Scalars['GUID'];
@@ -447,7 +455,7 @@ export type ResolversParentTypes = {
   LocalTime: Scalars['LocalTime'];
   LoginInfo: LoginInfo;
   LoginInput: LoginInput;
-  LoginPayload: ResolversParentTypes['InvalidAccountError'] | ResolversParentTypes['LoginInfo'];
+  LoginPayload: ResolversParentTypes['InvalidAccountError'] | ResolversParentTypes['LoginInfo'] | ResolversParentTypes['RateLimitError'];
   Long: Scalars['Long'];
   Longitude: Scalars['Longitude'];
   MAC: Scalars['MAC'];
@@ -469,6 +477,7 @@ export type ResolversParentTypes = {
   Query: {};
   RGB: Scalars['RGB'];
   RGBA: Scalars['RGBA'];
+  RateLimitError: RateLimitError;
   RegisterInput: RegisterInput;
   RegisterPayload: ResolversParentTypes['DuplicateEmailError'] | ResolversParentTypes['User'];
   SafeInt: Scalars['SafeInt'];
@@ -517,6 +526,14 @@ export type IsAuthenticatedDirectiveArgs = { };
 
 export type IsAuthenticatedDirectiveResolver<Result, Parent, ContextType = any, Args = IsAuthenticatedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
+export type RateLimitDirectiveArgs = {
+  key: Scalars['String'];
+  limit: Scalars['UnsignedInt'];
+  time: Scalars['UnsignedInt'];
+};
+
+export type RateLimitDirectiveResolver<Result, Parent, ContextType = any, Args = RateLimitDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type AuthorizationErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthorizationError'] = ResolversParentTypes['AuthorizationError']> = {
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -563,7 +580,7 @@ export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<Resolv
 }
 
 export type ErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Error'] = ResolversParentTypes['Error']> = {
-  __resolveType: TypeResolveFn<'AuthorizationError' | 'DuplicateEmailError' | 'InvalidAccountError', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'AuthorizationError' | 'DuplicateEmailError' | 'InvalidAccountError' | 'RateLimitError', ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
@@ -665,7 +682,7 @@ export type LoginInfoResolvers<ContextType = any, ParentType extends ResolversPa
 };
 
 export type LoginPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['LoginPayload'] = ResolversParentTypes['LoginPayload']> = {
-  __resolveType: TypeResolveFn<'InvalidAccountError' | 'LoginInfo', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'InvalidAccountError' | 'LoginInfo' | 'RateLimitError', ParentType, ContextType>;
 };
 
 export interface LongScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Long'], any> {
@@ -754,6 +771,13 @@ export interface RgbScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 export interface RgbaScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RGBA'], any> {
   name: 'RGBA';
 }
+
+export type RateLimitErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['RateLimitError'] = ResolversParentTypes['RateLimitError']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ttl?: Resolver<ResolversTypes['UnsignedInt'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export type RegisterPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['RegisterPayload'] = ResolversParentTypes['RegisterPayload']> = {
   __resolveType: TypeResolveFn<'DuplicateEmailError' | 'User', ParentType, ContextType>;
@@ -866,6 +890,7 @@ export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
   RGB?: GraphQLScalarType;
   RGBA?: GraphQLScalarType;
+  RateLimitError?: RateLimitErrorResolvers<ContextType>;
   RegisterPayload?: RegisterPayloadResolvers<ContextType>;
   SafeInt?: GraphQLScalarType;
   Time?: GraphQLScalarType;
@@ -885,4 +910,5 @@ export type DirectiveResolvers<ContextType = any> = {
   cacheControl?: CacheControlDirectiveResolver<any, any, ContextType>;
   constraint?: ConstraintDirectiveResolver<any, any, ContextType>;
   isAuthenticated?: IsAuthenticatedDirectiveResolver<any, any, ContextType>;
+  rateLimit?: RateLimitDirectiveResolver<any, any, ContextType>;
 };
