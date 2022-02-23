@@ -10,6 +10,8 @@ import { makeExecutableSchema } from "@graphql-tools/schema"
 import { GraphQLUpload } from "graphql-upload"
 import { typeDefs as ScalarNameTypeDefinition, resolvers as scalarResolvers } from "graphql-scalars"
 import { constraintDirective, constraintDirectiveTypeDefs } from "graphql-constraint-directive"
+import { BaseRedisCache } from "apollo-server-cache-redis"
+import Redis from "ioredis"
 
 import { directives } from "shared"
 import { loadFilesSync } from "@graphql-tools/load-files"
@@ -49,6 +51,13 @@ export default (async () => {
 		validationRules: [depthLimit(8)],
 		debug: env.NODE_ENV !== "production",
 		introspection: env.NODE_ENV !== "production",
+		persistedQueries: {
+			cache: new BaseRedisCache({
+				client: new Redis({
+					host: env.REDIS_HOST,
+				}),
+			}),
+		},
 	})
 
 	await server.start()
