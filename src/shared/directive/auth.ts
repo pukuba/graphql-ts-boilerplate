@@ -17,7 +17,7 @@ export const authDirectiveTransformer = (schema: GraphQLSchema) => {
 					if (user === null) {
 						return {
 							__typename: "AuthorizationError",
-							message: "Authorization token이 유효하지 않습니다",
+							message: "You must be logged in to access this resource",
 							path: info.fieldName,
 						}
 					}

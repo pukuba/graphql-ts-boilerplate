@@ -1,21 +1,13 @@
-type AuthorizationError implements Error {
+type DuplicateEmailError implements Error {
     message: String!
     path: String!
+    suggestion: String!
 }
 
-union isAuthorizedPayload = AuthorizationError | User
-
-extend type Query {
-    isAuthorized: isAuthorizedPayload! @isAuthenticated
-}
-
-extend type Mutation {
-    register(input: RegisterInput!): JWT!
-}
-
-input RegisterInput {
-    email: EmailAddress!
-    password: String! @constraint(pattern:"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$", uniqueTypeName: "Password")
+type InvalidAccountError implements Error {
+    message: String!
+    path: String!
+    suggestion: String!
 }
 
 type User {
@@ -24,4 +16,32 @@ type User {
     updatedAt: DateTime!
 }
 
-directive @isAuthenticated on FIELD_DEFINITION
+type LoginInfo {
+    token: JWT!
+    user: User!
+}
+
+union IsAuthorizedPayload = AuthorizationError | User
+
+union RegisterPayload = DuplicateEmailError | User
+
+union LoginPayload = InvalidAccountError | RateLimitError | LoginInfo
+
+extend type Query {
+    isAuthorized: IsAuthorizedPayload! @isAuthenticated
+}
+
+extend type Mutation {
+    register(input: RegisterInput!): RegisterPayload!
+    login(input: LoginInput!): LoginPayload! @rateLimit(time: 60, key: "login", limit: 5)
+}
+
+input RegisterInput {
+    email: EmailAddress!
+    password: String! @constraint(pattern:"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$", uniqueTypeName: "Password")
+}
+
+input LoginInput {
+    email: EmailAddress!
+    password: String! @constraint(pattern:"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$", uniqueTypeName: "Password")
+}
