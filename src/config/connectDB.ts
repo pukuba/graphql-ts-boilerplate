@@ -35,14 +35,14 @@ const connectDB = () => {
 
 export const mongoDB = connectDB()
 
-import Redis from "ioredis"
+import { createClient } from "redis"
 
-const redisClient = new Redis({ host: env.REDIS_HOST })
-
+const redisClient = createClient(`redis://${env.REDIS_HOST}`)
+import { promisify } from "util"
 export const redis = {
-	get: redisClient.get,
-	setex: redisClient.setex,
-	del: redisClient.del,
-	ttl: redisClient.ttl,
-	incr: redisClient.incr,
+	get: promisify(redisClient.get).bind(redisClient),
+	setex: promisify(redisClient.setex).bind(redisClient),
+	del: promisify(redisClient.del).bind(redisClient),
+	ttl: promisify(redisClient.ttl).bind(redisClient),
+	incr: promisify(redisClient.incr).bind(redisClient),
 }
