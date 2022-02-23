@@ -37,13 +37,12 @@ export const mongoDB = connectDB()
 
 import Redis from "ioredis"
 
-import { promisify } from "util"
-
 const redisClient = new Redis({ host: env.REDIS_HOST })
 
 export const redis = {
-	get: promisify(redisClient.get).bind(redisClient),
-	setex: promisify(redisClient.setex).bind(redisClient),
-	del: promisify(redisClient.del).bind(redisClient),
-	ttl: promisify(redisClient.ttl).bind(redisClient),
+	get: redisClient.get,
+	setex: redisClient.setex,
+	del: redisClient.del,
+	ttl: redisClient.ttl,
+	incr: redisClient.incr,
 }

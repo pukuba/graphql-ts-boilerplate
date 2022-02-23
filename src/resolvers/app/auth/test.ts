@@ -61,7 +61,7 @@ describe("Server auth test", () => {
 			const response = await request(app).post("/api").send({ query }).expect(200)
 			const data = response.body.data.isAuthorized as IsAuthorizedPayload as AuthorizationError
 			expect(data).to.be.deep.equal({
-				message: "Authorization token이 유효하지 않습니다",
+				message: "You must be logged in to access this resource",
 				path: "isAuthorized",
 				__typename: "AuthorizationError",
 			})

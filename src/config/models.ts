@@ -12,24 +12,18 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  DateTime: any;
-  /** A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/. */
-  EmailAddress: any;
-  HealthCheck: any;
-  Password: any;
-  /** A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction. */
-  JWT: any;
   /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
   BigInt: any;
   /** The `Byte` scalar type represents byte value as a Buffer */
   Byte: any;
   /** A field whose value is a Currency: https://en.wikipedia.org/wiki/ISO_4217. */
   Currency: any;
-  /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  Date: any;
   /** A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/. */
   DID: any;
+  /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
+  Date: any;
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
+  DateTime: any;
   /**
    *
    *     A string representing a duration conforming to the ISO8601 standard,
@@ -51,16 +45,19 @@ export type Scalars = {
    *
    */
   Duration: any;
+  /** A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/. */
+  EmailAddress: any;
   /** A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier. */
   GUID: any;
-  /** A field whose value is a hexadecimal: https://en.wikipedia.org/wiki/Hexadecimal. */
-  Hexadecimal: any;
-  /** A field whose value is a hex color code: https://en.wikipedia.org/wiki/Web_colors. */
-  HexColorCode: any;
   /** A field whose value is a CSS HSL color: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#hsl()_and_hsla(). */
   HSL: any;
   /** A field whose value is a CSS HSLA color: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#hsl()_and_hsla(). */
   HSLA: any;
+  HealthCheck: any;
+  /** A field whose value is a hex color code: https://en.wikipedia.org/wiki/Web_colors. */
+  HexColorCode: any;
+  /** A field whose value is a hexadecimal: https://en.wikipedia.org/wiki/Hexadecimal. */
+  Hexadecimal: any;
   /** A field whose value is an International Bank Account Number (IBAN): https://en.wikipedia.org/wiki/International_Bank_Account_Number. */
   IBAN: any;
   /** A field whose value is a IPv4 address: https://en.wikipedia.org/wiki/IPv4. */
@@ -94,6 +91,8 @@ export type Scalars = {
   JSON: any;
   /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSONObject: any;
+  /** A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction. */
+  JWT: any;
   /** A field whose value is a valid decimal degrees latitude number (53.471): https://en.wikipedia.org/wiki/Latitude */
   Latitude: any;
   /** A local date string (i.e., with no associated timezone) in `YYYY-MM-DD` format, e.g. `2020-01-01`. */
@@ -124,6 +123,7 @@ export type Scalars = {
   NonPositiveInt: any;
   /** A field whose value conforms with the standard mongodb object ID as described here: https://docs.mongodb.com/manual/reference/method/ObjectId/#ObjectId. Example: 5e5677d71bdc2ae76344968c */
   ObjectID: any;
+  Password: any;
   /** A field whose value conforms to the standard E.164 format as specified in: https://en.wikipedia.org/wiki/E.164. Basically this is +17895551234. */
   PhoneNumber: any;
   /** A field whose value is a valid TCP port within the range of 0 to 65535: https://en.wikipedia.org/wiki/Transmission_Control_Protocol#TCP_ports */
@@ -144,31 +144,23 @@ export type Scalars = {
   Time: any;
   /** The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch. */
   Timestamp: any;
+  /** A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt. */
+  URL: any;
+  /** A currency string, such as $21.25 */
+  USCurrency: any;
+  /** A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier. */
+  UUID: any;
   /** Floats that will have a value of 0 or more. */
   UnsignedFloat: any;
   /** Integers that will have a value of 0 or more. */
   UnsignedInt: any;
   /** The `Upload` scalar type represents a file upload. */
   Upload: any;
-  /** A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt. */
-  URL: any;
-  /** A currency string, such as $21.25 */
-  USCurrency: any;
   /** A field whose value is a UTC Offset: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones */
   UtcOffset: any;
-  /** A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier. */
-  UUID: any;
   /** Represents NULL values */
   Void: any;
 };
-
-export type Query = {
-  __typename?: 'Query';
-  healthLive: Scalars['DateTime'];
-  isAuthorized: IsAuthorizedPayload;
-};
-
-export type IsAuthorizedPayload = AuthorizationError | User;
 
 export type AuthorizationError = Error & {
   __typename?: 'AuthorizationError';
@@ -176,22 +168,61 @@ export type AuthorizationError = Error & {
   path: Scalars['String'];
 };
 
+export enum CacheControlScope {
+  Private = 'PRIVATE',
+  Public = 'PUBLIC'
+}
+
+export type DuplicateEmailError = Error & {
+  __typename?: 'DuplicateEmailError';
+  message: Scalars['String'];
+  path: Scalars['String'];
+  suggestion: Scalars['String'];
+};
+
 export type Error = {
   message: Scalars['String'];
   path: Scalars['String'];
 };
 
-export type User = {
-  __typename?: 'User';
-  createdAt: Scalars['DateTime'];
-  email: Scalars['EmailAddress'];
-  updatedAt: Scalars['DateTime'];
+export type File = {
+  __typename?: 'File';
+  encoding: Scalars['String'];
+  filename: Scalars['String'];
+  mimetype: Scalars['String'];
 };
+
+export type HealthCheckInput = {
+  data: Scalars['HealthCheck'];
+};
+
+export type InvalidAccountError = Error & {
+  __typename?: 'InvalidAccountError';
+  message: Scalars['String'];
+  path: Scalars['String'];
+  suggestion: Scalars['String'];
+};
+
+export type IsAuthorizedPayload = AuthorizationError | User;
+
+export type LoginInfo = {
+  __typename?: 'LoginInfo';
+  token: Scalars['JWT'];
+  user: User;
+};
+
+export type LoginInput = {
+  email: Scalars['EmailAddress'];
+  password: Scalars['Password'];
+};
+
+export type LoginPayload = InvalidAccountError | LoginInfo;
 
 export type Mutation = {
   __typename?: 'Mutation';
   healthCheck: Scalars['String'];
-  register: Scalars['JWT'];
+  login: LoginPayload;
+  register: RegisterPayload;
 };
 
 
@@ -200,12 +231,19 @@ export type MutationHealthCheckArgs = {
 };
 
 
+export type MutationLoginArgs = {
+  input: LoginInput;
+};
+
+
 export type MutationRegisterArgs = {
   input: RegisterInput;
 };
 
-export type HealthCheckInput = {
-  data: Scalars['HealthCheck'];
+export type Query = {
+  __typename?: 'Query';
+  healthLive: Scalars['DateTime'];
+  isAuthorized: IsAuthorizedPayload;
 };
 
 export type RegisterInput = {
@@ -213,16 +251,13 @@ export type RegisterInput = {
   password: Scalars['Password'];
 };
 
-export enum CacheControlScope {
-  Private = 'PRIVATE',
-  Public = 'PUBLIC'
-}
+export type RegisterPayload = DuplicateEmailError | User;
 
-export type File = {
-  __typename?: 'File';
-  encoding: Scalars['String'];
-  filename: Scalars['String'];
-  mimetype: Scalars['String'];
+export type User = {
+  __typename?: 'User';
+  createdAt: Scalars['DateTime'];
+  email: Scalars['EmailAddress'];
+  updatedAt: Scalars['DateTime'];
 };
 
 
@@ -294,50 +329,50 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Query: ResolverTypeWrapper<{}>;
-  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
-  isAuthorizedPayload: ResolversTypes['AuthorizationError'] | ResolversTypes['User'];
   AuthorizationError: ResolverTypeWrapper<AuthorizationError>;
-  Error: ResolversTypes['AuthorizationError'];
-  String: ResolverTypeWrapper<Scalars['String']>;
-  User: ResolverTypeWrapper<User>;
-  EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
-  Mutation: ResolverTypeWrapper<{}>;
-  HealthCheckInput: HealthCheckInput;
-  HealthCheck: ResolverTypeWrapper<Scalars['HealthCheck']>;
-  RegisterInput: RegisterInput;
-  Password: ResolverTypeWrapper<Scalars['Password']>;
-  JWT: ResolverTypeWrapper<Scalars['JWT']>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
   CacheControlScope: CacheControlScope;
   Currency: ResolverTypeWrapper<Scalars['Currency']>;
-  Date: ResolverTypeWrapper<Scalars['Date']>;
   DID: ResolverTypeWrapper<Scalars['DID']>;
+  Date: ResolverTypeWrapper<Scalars['Date']>;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
+  DuplicateEmailError: ResolverTypeWrapper<DuplicateEmailError>;
   Duration: ResolverTypeWrapper<Scalars['Duration']>;
+  EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
+  Error: ResolversTypes['AuthorizationError'] | ResolversTypes['DuplicateEmailError'] | ResolversTypes['InvalidAccountError'];
   File: ResolverTypeWrapper<File>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   GUID: ResolverTypeWrapper<Scalars['GUID']>;
-  Hexadecimal: ResolverTypeWrapper<Scalars['Hexadecimal']>;
-  HexColorCode: ResolverTypeWrapper<Scalars['HexColorCode']>;
   HSL: ResolverTypeWrapper<Scalars['HSL']>;
   HSLA: ResolverTypeWrapper<Scalars['HSLA']>;
+  HealthCheck: ResolverTypeWrapper<Scalars['HealthCheck']>;
+  HealthCheckInput: HealthCheckInput;
+  HexColorCode: ResolverTypeWrapper<Scalars['HexColorCode']>;
+  Hexadecimal: ResolverTypeWrapper<Scalars['Hexadecimal']>;
   IBAN: ResolverTypeWrapper<Scalars['IBAN']>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
   IPv4: ResolverTypeWrapper<Scalars['IPv4']>;
   IPv6: ResolverTypeWrapper<Scalars['IPv6']>;
   ISBN: ResolverTypeWrapper<Scalars['ISBN']>;
   ISO8601Duration: ResolverTypeWrapper<Scalars['ISO8601Duration']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
+  InvalidAccountError: ResolverTypeWrapper<InvalidAccountError>;
+  IsAuthorizedPayload: ResolversTypes['AuthorizationError'] | ResolversTypes['User'];
   JSON: ResolverTypeWrapper<Scalars['JSON']>;
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']>;
+  JWT: ResolverTypeWrapper<Scalars['JWT']>;
   Latitude: ResolverTypeWrapper<Scalars['Latitude']>;
   LocalDate: ResolverTypeWrapper<Scalars['LocalDate']>;
   LocalEndTime: ResolverTypeWrapper<Scalars['LocalEndTime']>;
   LocalTime: ResolverTypeWrapper<Scalars['LocalTime']>;
+  LoginInfo: ResolverTypeWrapper<LoginInfo>;
+  LoginInput: LoginInput;
+  LoginPayload: ResolversTypes['InvalidAccountError'] | ResolversTypes['LoginInfo'];
   Long: ResolverTypeWrapper<Scalars['Long']>;
   Longitude: ResolverTypeWrapper<Scalars['Longitude']>;
   MAC: ResolverTypeWrapper<Scalars['MAC']>;
+  Mutation: ResolverTypeWrapper<{}>;
   NegativeFloat: ResolverTypeWrapper<Scalars['NegativeFloat']>;
   NegativeInt: ResolverTypeWrapper<Scalars['NegativeInt']>;
   NonEmptyString: ResolverTypeWrapper<Scalars['NonEmptyString']>;
@@ -346,71 +381,77 @@ export type ResolversTypes = {
   NonPositiveFloat: ResolverTypeWrapper<Scalars['NonPositiveFloat']>;
   NonPositiveInt: ResolverTypeWrapper<Scalars['NonPositiveInt']>;
   ObjectID: ResolverTypeWrapper<Scalars['ObjectID']>;
+  Password: ResolverTypeWrapper<Scalars['Password']>;
   PhoneNumber: ResolverTypeWrapper<Scalars['PhoneNumber']>;
   Port: ResolverTypeWrapper<Scalars['Port']>;
   PositiveFloat: ResolverTypeWrapper<Scalars['PositiveFloat']>;
   PositiveInt: ResolverTypeWrapper<Scalars['PositiveInt']>;
   PostalCode: ResolverTypeWrapper<Scalars['PostalCode']>;
+  Query: ResolverTypeWrapper<{}>;
   RGB: ResolverTypeWrapper<Scalars['RGB']>;
   RGBA: ResolverTypeWrapper<Scalars['RGBA']>;
+  RegisterInput: RegisterInput;
+  RegisterPayload: ResolversTypes['DuplicateEmailError'] | ResolversTypes['User'];
   SafeInt: ResolverTypeWrapper<Scalars['SafeInt']>;
+  String: ResolverTypeWrapper<Scalars['String']>;
   Time: ResolverTypeWrapper<Scalars['Time']>;
   Timestamp: ResolverTypeWrapper<Scalars['Timestamp']>;
+  URL: ResolverTypeWrapper<Scalars['URL']>;
+  USCurrency: ResolverTypeWrapper<Scalars['USCurrency']>;
+  UUID: ResolverTypeWrapper<Scalars['UUID']>;
   UnsignedFloat: ResolverTypeWrapper<Scalars['UnsignedFloat']>;
   UnsignedInt: ResolverTypeWrapper<Scalars['UnsignedInt']>;
   Upload: ResolverTypeWrapper<Scalars['Upload']>;
-  URL: ResolverTypeWrapper<Scalars['URL']>;
-  USCurrency: ResolverTypeWrapper<Scalars['USCurrency']>;
+  User: ResolverTypeWrapper<User>;
   UtcOffset: ResolverTypeWrapper<Scalars['UtcOffset']>;
-  UUID: ResolverTypeWrapper<Scalars['UUID']>;
   Void: ResolverTypeWrapper<Scalars['Void']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Query: {};
-  DateTime: Scalars['DateTime'];
-  isAuthorizedPayload: ResolversParentTypes['AuthorizationError'] | ResolversParentTypes['User'];
   AuthorizationError: AuthorizationError;
-  Error: ResolversParentTypes['AuthorizationError'];
-  String: Scalars['String'];
-  User: User;
-  EmailAddress: Scalars['EmailAddress'];
-  Mutation: {};
-  HealthCheckInput: HealthCheckInput;
-  HealthCheck: Scalars['HealthCheck'];
-  RegisterInput: RegisterInput;
-  Password: Scalars['Password'];
-  JWT: Scalars['JWT'];
-  Boolean: Scalars['Boolean'];
   BigInt: Scalars['BigInt'];
+  Boolean: Scalars['Boolean'];
   Byte: Scalars['Byte'];
   Currency: Scalars['Currency'];
-  Date: Scalars['Date'];
   DID: Scalars['DID'];
+  Date: Scalars['Date'];
+  DateTime: Scalars['DateTime'];
+  DuplicateEmailError: DuplicateEmailError;
   Duration: Scalars['Duration'];
+  EmailAddress: Scalars['EmailAddress'];
+  Error: ResolversParentTypes['AuthorizationError'] | ResolversParentTypes['DuplicateEmailError'] | ResolversParentTypes['InvalidAccountError'];
   File: File;
   Float: Scalars['Float'];
   GUID: Scalars['GUID'];
-  Hexadecimal: Scalars['Hexadecimal'];
-  HexColorCode: Scalars['HexColorCode'];
   HSL: Scalars['HSL'];
   HSLA: Scalars['HSLA'];
+  HealthCheck: Scalars['HealthCheck'];
+  HealthCheckInput: HealthCheckInput;
+  HexColorCode: Scalars['HexColorCode'];
+  Hexadecimal: Scalars['Hexadecimal'];
   IBAN: Scalars['IBAN'];
-  Int: Scalars['Int'];
   IPv4: Scalars['IPv4'];
   IPv6: Scalars['IPv6'];
   ISBN: Scalars['ISBN'];
   ISO8601Duration: Scalars['ISO8601Duration'];
+  Int: Scalars['Int'];
+  InvalidAccountError: InvalidAccountError;
+  IsAuthorizedPayload: ResolversParentTypes['AuthorizationError'] | ResolversParentTypes['User'];
   JSON: Scalars['JSON'];
   JSONObject: Scalars['JSONObject'];
+  JWT: Scalars['JWT'];
   Latitude: Scalars['Latitude'];
   LocalDate: Scalars['LocalDate'];
   LocalEndTime: Scalars['LocalEndTime'];
   LocalTime: Scalars['LocalTime'];
+  LoginInfo: LoginInfo;
+  LoginInput: LoginInput;
+  LoginPayload: ResolversParentTypes['InvalidAccountError'] | ResolversParentTypes['LoginInfo'];
   Long: Scalars['Long'];
   Longitude: Scalars['Longitude'];
   MAC: Scalars['MAC'];
+  Mutation: {};
   NegativeFloat: Scalars['NegativeFloat'];
   NegativeInt: Scalars['NegativeInt'];
   NonEmptyString: Scalars['NonEmptyString'];
@@ -419,23 +460,29 @@ export type ResolversParentTypes = {
   NonPositiveFloat: Scalars['NonPositiveFloat'];
   NonPositiveInt: Scalars['NonPositiveInt'];
   ObjectID: Scalars['ObjectID'];
+  Password: Scalars['Password'];
   PhoneNumber: Scalars['PhoneNumber'];
   Port: Scalars['Port'];
   PositiveFloat: Scalars['PositiveFloat'];
   PositiveInt: Scalars['PositiveInt'];
   PostalCode: Scalars['PostalCode'];
+  Query: {};
   RGB: Scalars['RGB'];
   RGBA: Scalars['RGBA'];
+  RegisterInput: RegisterInput;
+  RegisterPayload: ResolversParentTypes['DuplicateEmailError'] | ResolversParentTypes['User'];
   SafeInt: Scalars['SafeInt'];
+  String: Scalars['String'];
   Time: Scalars['Time'];
   Timestamp: Scalars['Timestamp'];
+  URL: Scalars['URL'];
+  USCurrency: Scalars['USCurrency'];
+  UUID: Scalars['UUID'];
   UnsignedFloat: Scalars['UnsignedFloat'];
   UnsignedInt: Scalars['UnsignedInt'];
   Upload: Scalars['Upload'];
-  URL: Scalars['URL'];
-  USCurrency: Scalars['USCurrency'];
+  User: User;
   UtcOffset: Scalars['UtcOffset'];
-  UUID: Scalars['UUID'];
   Void: Scalars['Void'];
 };
 
@@ -470,58 +517,11 @@ export type IsAuthenticatedDirectiveArgs = { };
 
 export type IsAuthenticatedDirectiveResolver<Result, Parent, ContextType = any, Args = IsAuthenticatedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  healthLive?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  isAuthorized?: Resolver<ResolversTypes['isAuthorizedPayload'], ParentType, ContextType>;
-};
-
-export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
-  name: 'DateTime';
-}
-
-export type IsAuthorizedPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['isAuthorizedPayload'] = ResolversParentTypes['isAuthorizedPayload']> = {
-  __resolveType: TypeResolveFn<'AuthorizationError' | 'User', ParentType, ContextType>;
-};
-
 export type AuthorizationErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthorizationError'] = ResolversParentTypes['AuthorizationError']> = {
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
-
-export type ErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Error'] = ResolversParentTypes['Error']> = {
-  __resolveType: TypeResolveFn<'AuthorizationError', ParentType, ContextType>;
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-};
-
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
-  name: 'EmailAddress';
-}
-
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  healthCheck?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationHealthCheckArgs, 'input'>>;
-  register?: Resolver<ResolversTypes['JWT'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'input'>>;
-};
-
-export interface HealthCheckScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['HealthCheck'], any> {
-  name: 'HealthCheck';
-}
-
-export interface PasswordScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Password'], any> {
-  name: 'Password';
-}
-
-export interface JwtScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JWT'], any> {
-  name: 'JWT';
-}
 
 export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
   name: 'BigInt';
@@ -535,17 +535,38 @@ export interface CurrencyScalarConfig extends GraphQLScalarTypeConfig<ResolversT
   name: 'Currency';
 }
 
-export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
-  name: 'Date';
-}
-
 export interface DidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DID'], any> {
   name: 'DID';
 }
 
+export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date';
+}
+
+export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+  name: 'DateTime';
+}
+
+export type DuplicateEmailErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['DuplicateEmailError'] = ResolversParentTypes['DuplicateEmailError']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  suggestion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface DurationScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Duration'], any> {
   name: 'Duration';
 }
+
+export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
+  name: 'EmailAddress';
+}
+
+export type ErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Error'] = ResolversParentTypes['Error']> = {
+  __resolveType: TypeResolveFn<'AuthorizationError' | 'DuplicateEmailError' | 'InvalidAccountError', ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
 
 export type FileResolvers<ContextType = any, ParentType extends ResolversParentTypes['File'] = ResolversParentTypes['File']> = {
   encoding?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -558,20 +579,24 @@ export interface GuidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'GUID';
 }
 
-export interface HexadecimalScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Hexadecimal'], any> {
-  name: 'Hexadecimal';
-}
-
-export interface HexColorCodeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['HexColorCode'], any> {
-  name: 'HexColorCode';
-}
-
 export interface HslScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['HSL'], any> {
   name: 'HSL';
 }
 
 export interface HslaScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['HSLA'], any> {
   name: 'HSLA';
+}
+
+export interface HealthCheckScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['HealthCheck'], any> {
+  name: 'HealthCheck';
+}
+
+export interface HexColorCodeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['HexColorCode'], any> {
+  name: 'HexColorCode';
+}
+
+export interface HexadecimalScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Hexadecimal'], any> {
+  name: 'Hexadecimal';
 }
 
 export interface IbanScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['IBAN'], any> {
@@ -594,12 +619,27 @@ export interface Iso8601DurationScalarConfig extends GraphQLScalarTypeConfig<Res
   name: 'ISO8601Duration';
 }
 
+export type InvalidAccountErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['InvalidAccountError'] = ResolversParentTypes['InvalidAccountError']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  suggestion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type IsAuthorizedPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['IsAuthorizedPayload'] = ResolversParentTypes['IsAuthorizedPayload']> = {
+  __resolveType: TypeResolveFn<'AuthorizationError' | 'User', ParentType, ContextType>;
+};
+
 export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
   name: 'JSON';
 }
 
 export interface JsonObjectScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSONObject'], any> {
   name: 'JSONObject';
+}
+
+export interface JwtScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JWT'], any> {
+  name: 'JWT';
 }
 
 export interface LatitudeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Latitude'], any> {
@@ -618,6 +658,16 @@ export interface LocalTimeScalarConfig extends GraphQLScalarTypeConfig<Resolvers
   name: 'LocalTime';
 }
 
+export type LoginInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['LoginInfo'] = ResolversParentTypes['LoginInfo']> = {
+  token?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type LoginPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['LoginPayload'] = ResolversParentTypes['LoginPayload']> = {
+  __resolveType: TypeResolveFn<'InvalidAccountError' | 'LoginInfo', ParentType, ContextType>;
+};
+
 export interface LongScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Long'], any> {
   name: 'Long';
 }
@@ -629,6 +679,12 @@ export interface LongitudeScalarConfig extends GraphQLScalarTypeConfig<Resolvers
 export interface MacScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['MAC'], any> {
   name: 'MAC';
 }
+
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  healthCheck?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationHealthCheckArgs, 'input'>>;
+  login?: Resolver<ResolversTypes['LoginPayload'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
+  register?: Resolver<ResolversTypes['RegisterPayload'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'input'>>;
+};
 
 export interface NegativeFloatScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['NegativeFloat'], any> {
   name: 'NegativeFloat';
@@ -662,6 +718,10 @@ export interface ObjectIdScalarConfig extends GraphQLScalarTypeConfig<ResolversT
   name: 'ObjectID';
 }
 
+export interface PasswordScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Password'], any> {
+  name: 'Password';
+}
+
 export interface PhoneNumberScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['PhoneNumber'], any> {
   name: 'PhoneNumber';
 }
@@ -682,6 +742,11 @@ export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<Resolver
   name: 'PostalCode';
 }
 
+export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  healthLive?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  isAuthorized?: Resolver<ResolversTypes['IsAuthorizedPayload'], ParentType, ContextType>;
+};
+
 export interface RgbScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RGB'], any> {
   name: 'RGB';
 }
@@ -689,6 +754,10 @@ export interface RgbScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 export interface RgbaScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RGBA'], any> {
   name: 'RGBA';
 }
+
+export type RegisterPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['RegisterPayload'] = ResolversParentTypes['RegisterPayload']> = {
+  __resolveType: TypeResolveFn<'DuplicateEmailError' | 'User', ParentType, ContextType>;
+};
 
 export interface SafeIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['SafeInt'], any> {
   name: 'SafeInt';
@@ -700,6 +769,18 @@ export interface TimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 
 export interface TimestampScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Timestamp'], any> {
   name: 'Timestamp';
+}
+
+export interface UrlScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['URL'], any> {
+  name: 'URL';
+}
+
+export interface UsCurrencyScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['USCurrency'], any> {
+  name: 'USCurrency';
+}
+
+export interface UuidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UUID'], any> {
+  name: 'UUID';
 }
 
 export interface UnsignedFloatScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UnsignedFloat'], any> {
@@ -714,20 +795,15 @@ export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
   name: 'Upload';
 }
 
-export interface UrlScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['URL'], any> {
-  name: 'URL';
-}
-
-export interface UsCurrencyScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['USCurrency'], any> {
-  name: 'USCurrency';
-}
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export interface UtcOffsetScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UtcOffset'], any> {
   name: 'UtcOffset';
-}
-
-export interface UuidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UUID'], any> {
-  name: 'UUID';
 }
 
 export interface VoidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Void'], any> {
@@ -735,43 +811,44 @@ export interface VoidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type Resolvers<ContextType = any> = {
-  Query?: QueryResolvers<ContextType>;
-  DateTime?: GraphQLScalarType;
-  isAuthorizedPayload?: IsAuthorizedPayloadResolvers<ContextType>;
   AuthorizationError?: AuthorizationErrorResolvers<ContextType>;
-  Error?: ErrorResolvers<ContextType>;
-  User?: UserResolvers<ContextType>;
-  EmailAddress?: GraphQLScalarType;
-  Mutation?: MutationResolvers<ContextType>;
-  HealthCheck?: GraphQLScalarType;
-  Password?: GraphQLScalarType;
-  JWT?: GraphQLScalarType;
   BigInt?: GraphQLScalarType;
   Byte?: GraphQLScalarType;
   Currency?: GraphQLScalarType;
-  Date?: GraphQLScalarType;
   DID?: GraphQLScalarType;
+  Date?: GraphQLScalarType;
+  DateTime?: GraphQLScalarType;
+  DuplicateEmailError?: DuplicateEmailErrorResolvers<ContextType>;
   Duration?: GraphQLScalarType;
+  EmailAddress?: GraphQLScalarType;
+  Error?: ErrorResolvers<ContextType>;
   File?: FileResolvers<ContextType>;
   GUID?: GraphQLScalarType;
-  Hexadecimal?: GraphQLScalarType;
-  HexColorCode?: GraphQLScalarType;
   HSL?: GraphQLScalarType;
   HSLA?: GraphQLScalarType;
+  HealthCheck?: GraphQLScalarType;
+  HexColorCode?: GraphQLScalarType;
+  Hexadecimal?: GraphQLScalarType;
   IBAN?: GraphQLScalarType;
   IPv4?: GraphQLScalarType;
   IPv6?: GraphQLScalarType;
   ISBN?: GraphQLScalarType;
   ISO8601Duration?: GraphQLScalarType;
+  InvalidAccountError?: InvalidAccountErrorResolvers<ContextType>;
+  IsAuthorizedPayload?: IsAuthorizedPayloadResolvers<ContextType>;
   JSON?: GraphQLScalarType;
   JSONObject?: GraphQLScalarType;
+  JWT?: GraphQLScalarType;
   Latitude?: GraphQLScalarType;
   LocalDate?: GraphQLScalarType;
   LocalEndTime?: GraphQLScalarType;
   LocalTime?: GraphQLScalarType;
+  LoginInfo?: LoginInfoResolvers<ContextType>;
+  LoginPayload?: LoginPayloadResolvers<ContextType>;
   Long?: GraphQLScalarType;
   Longitude?: GraphQLScalarType;
   MAC?: GraphQLScalarType;
+  Mutation?: MutationResolvers<ContextType>;
   NegativeFloat?: GraphQLScalarType;
   NegativeInt?: GraphQLScalarType;
   NonEmptyString?: GraphQLScalarType;
@@ -780,23 +857,27 @@ export type Resolvers<ContextType = any> = {
   NonPositiveFloat?: GraphQLScalarType;
   NonPositiveInt?: GraphQLScalarType;
   ObjectID?: GraphQLScalarType;
+  Password?: GraphQLScalarType;
   PhoneNumber?: GraphQLScalarType;
   Port?: GraphQLScalarType;
   PositiveFloat?: GraphQLScalarType;
   PositiveInt?: GraphQLScalarType;
   PostalCode?: GraphQLScalarType;
+  Query?: QueryResolvers<ContextType>;
   RGB?: GraphQLScalarType;
   RGBA?: GraphQLScalarType;
+  RegisterPayload?: RegisterPayloadResolvers<ContextType>;
   SafeInt?: GraphQLScalarType;
   Time?: GraphQLScalarType;
   Timestamp?: GraphQLScalarType;
+  URL?: GraphQLScalarType;
+  USCurrency?: GraphQLScalarType;
+  UUID?: GraphQLScalarType;
   UnsignedFloat?: GraphQLScalarType;
   UnsignedInt?: GraphQLScalarType;
   Upload?: GraphQLScalarType;
-  URL?: GraphQLScalarType;
-  USCurrency?: GraphQLScalarType;
+  User?: UserResolvers<ContextType>;
   UtcOffset?: GraphQLScalarType;
-  UUID?: GraphQLScalarType;
   Void?: GraphQLScalarType;
 };
 

@@ -1,9 +1,3 @@
-directive @isAuthenticated on FIELD_DEFINITION
-type AuthorizationError implements Error {
-    message: String!
-    path: String!
-}
-
 type DuplicateEmailError implements Error {
     message: String!
     path: String!
