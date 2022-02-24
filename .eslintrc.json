@@ -16,10 +16,12 @@
     "plugins": [
         "@typescript-eslint"
     ],
+    "ignorePatterns": ["models.ts"],
     "rules": {
         "indent": [
             "error",
-            "tab"
+            "tab",
+            { "SwitchCase": 1 }
         ],
         "linebreak-style": [
             "error",
@@ -30,6 +32,14 @@
             "error",
             "never"
         ],
-        "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
+        "no-unused-vars": [
+            "error", {
+                "vars": "all", 
+                "args": "after-used", 
+                "ignoreRestSiblings": false, 
+                "argsIgnorePattern": "^_", 
+                "varsIgnorePattern": "^_"
+            }
+        ]
     }
 }

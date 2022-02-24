@@ -12,7 +12,7 @@ export const rateLimitDirectiveTransformer = (schema: GraphQLSchema) => {
 				/* istanbul ignore next */
 				const { resolve = defaultFieldResolver } = fieldConfig
 				fieldConfig.resolve = async function (...args) {
-					const [parent, input, context, info] = args
+					const [_parent, _input, context, info] = args
 					const ip = context.req.headers["x-forwarded-for"]
 					const redisKey = `rateLimit-${key}:${ip}`
 					const [requestCount, ttl] = await Promise.all([redis.get(redisKey), redis.ttl(redisKey)])

@@ -17,7 +17,7 @@ const expireFactory = (type: Token) => {
 	}
 }
 
-const encode = (payload: any, type: Token) => sign(payload, env.JWT_SECRET, expireFactory(type))
+const encode = (payload: object, type: Token) => sign(payload, env.JWT_SECRET, expireFactory(type))
 
 const decode = (token: string) => {
 	try {

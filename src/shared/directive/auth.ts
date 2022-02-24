@@ -12,7 +12,7 @@ export const authDirectiveTransformer = (schema: GraphQLSchema) => {
 				/* istanbul ignore next */
 				const { resolve = defaultFieldResolver } = fieldConfig
 				fieldConfig.resolve = async function (...args) {
-					const [parent, input, context, info] = args
+					const [_parent, _input, context, info] = args
 					const user = jwt.decode(context.req.headers.authorization)
 					if (user === null) {
 						return {
