@@ -8,7 +8,7 @@
     "coverage": "nyc --reporter=html --reporter=text --reporter=lcov yarn test",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint './src/**/*.ts' --quiet --fix",
-    "build": "tsc -p .",
+    "build": "swc ./src --out-dir dist",
     "start": "NODE_PATH=src/ nodemon --exec ts-node src/index.ts",
     "on": "NODE_ENV=production; NODE_PATH=dist/ node dist/index.js",
     "codegen": "graphql-codegen --config codegen.yml"
@@ -59,6 +59,8 @@
   "devDependencies": {
     "@graphql-codegen/cli": "^2.6.2",
     "@graphql-codegen/typescript-resolvers": "^2.5.2",
+    "@swc/cli": "^0.1.55",
+    "@swc/core": "^1.2.145",
     "@types/bcryptjs": "^2.4.2",
     "@types/bson": "^4.2.0",
     "@types/chai": "^4.3.0",
