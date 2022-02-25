@@ -1,5 +1,5 @@
 overwrite: true
-schema: "http://localhost:5256/api"
+schema: "http://localhost:3000/api"
 generates:
   src/config/models.ts:
     plugins:
