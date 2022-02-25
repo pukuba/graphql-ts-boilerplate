@@ -218,10 +218,13 @@ export type LoginInput = {
 
 export type LoginPayload = InvalidAccountError | LoginInfo | RateLimitError;
 
+export type LogoutPayload = AuthorizationError | User;
+
 export type Mutation = {
   __typename?: 'Mutation';
   healthCheck: Scalars['String'];
   login: LoginPayload;
+  logout: LogoutPayload;
   register: RegisterPayload;
 };
 
@@ -376,6 +379,7 @@ export type ResolversTypes = {
   LoginInfo: ResolverTypeWrapper<LoginInfo>;
   LoginInput: LoginInput;
   LoginPayload: ResolversTypes['InvalidAccountError'] | ResolversTypes['LoginInfo'] | ResolversTypes['RateLimitError'];
+  LogoutPayload: ResolversTypes['AuthorizationError'] | ResolversTypes['User'];
   Long: ResolverTypeWrapper<Scalars['Long']>;
   Longitude: ResolverTypeWrapper<Scalars['Longitude']>;
   MAC: ResolverTypeWrapper<Scalars['MAC']>;
@@ -456,6 +460,7 @@ export type ResolversParentTypes = {
   LoginInfo: LoginInfo;
   LoginInput: LoginInput;
   LoginPayload: ResolversParentTypes['InvalidAccountError'] | ResolversParentTypes['LoginInfo'] | ResolversParentTypes['RateLimitError'];
+  LogoutPayload: ResolversParentTypes['AuthorizationError'] | ResolversParentTypes['User'];
   Long: Scalars['Long'];
   Longitude: Scalars['Longitude'];
   MAC: Scalars['MAC'];
@@ -685,6 +690,10 @@ export type LoginPayloadResolvers<ContextType = any, ParentType extends Resolver
   __resolveType: TypeResolveFn<'InvalidAccountError' | 'LoginInfo' | 'RateLimitError', ParentType, ContextType>;
 };
 
+export type LogoutPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['LogoutPayload'] = ResolversParentTypes['LogoutPayload']> = {
+  __resolveType: TypeResolveFn<'AuthorizationError' | 'User', ParentType, ContextType>;
+};
+
 export interface LongScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Long'], any> {
   name: 'Long';
 }
@@ -700,6 +709,7 @@ export interface MacScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   healthCheck?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationHealthCheckArgs, 'input'>>;
   login?: Resolver<ResolversTypes['LoginPayload'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
+  logout?: Resolver<ResolversTypes['LogoutPayload'], ParentType, ContextType>;
   register?: Resolver<ResolversTypes['RegisterPayload'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'input'>>;
 };
 
@@ -869,6 +879,7 @@ export type Resolvers<ContextType = any> = {
   LocalTime?: GraphQLScalarType;
   LoginInfo?: LoginInfoResolvers<ContextType>;
   LoginPayload?: LoginPayloadResolvers<ContextType>;
+  LogoutPayload?: LogoutPayloadResolvers<ContextType>;
   Long?: GraphQLScalarType;
   Longitude?: GraphQLScalarType;
   MAC?: GraphQLScalarType;

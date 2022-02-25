@@ -27,6 +27,8 @@ union RegisterPayload = DuplicateEmailError | User
 
 union LoginPayload = InvalidAccountError | RateLimitError | LoginInfo
 
+union LogoutPayload = AuthorizationError | User
+
 extend type Query {
     isAuthorized: IsAuthorizedPayload! @isAuthenticated
 }
@@ -34,6 +36,7 @@ extend type Query {
 extend type Mutation {
     register(input: RegisterInput!): RegisterPayload!
     login(input: LoginInput!): LoginPayload! @rateLimit(time: 60, key: "login", limit: 5)
+    logout: LogoutPayload! @isAuthenticated
 }
 
 input RegisterInput {

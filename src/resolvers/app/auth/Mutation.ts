@@ -1,4 +1,4 @@
-import { Context, MutationRegisterArgs, MutationLoginArgs } from "config"
+import { Context, MutationRegisterArgs, MutationLoginArgs, RequireFields } from "config"
 import { createHashedPassword, checkPassword, jwt } from "shared"
 
 export const register = async (parent: void, args: MutationRegisterArgs, ctx: Context) => {
@@ -55,4 +55,12 @@ export const login = async (parent: void, args: MutationLoginArgs, ctx: Context)
 		user: document.value,
 		token: jwt.encode({ email, updatedAt, createdAt }, "user"),
 	}
+}
+
+export const logout = async (parent: void, args: MutationLoginArgs, ctx: RequireFields<Context, "user">) => {
+	const progress = Math.floor(Date.now() / 1000) - ctx.user.iat
+	/** 1 day = 86400 sec */
+	const exp = 60 * 60 * 24
+	await ctx.redis.setex(`blacklist:${ctx.token}`, exp - progress, "")
+	return { __typename: "User", ...ctx.user }
 }
