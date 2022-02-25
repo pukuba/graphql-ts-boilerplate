@@ -246,11 +246,7 @@ describe("Server auth test", () => {
 
 		describe("Failure", () => {
 			it("Should return an AuthorizationError", async () => {
-				const response = await request(app)
-					.post("/api")
-					.send({ query })
-					.set("Authorization", `Bearer ${token}`)
-					.expect(200)
+				const response = await request(app).post("/api").send({ query }).set("Authorization", token).expect(200)
 				const data = response.body.data.isAuthorized as IsAuthorizedPayload as AuthorizationError
 				expect(data).to.be.deep.equal({
 					message: "You must be logged in to access this resource",
