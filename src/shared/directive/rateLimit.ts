@@ -1,8 +1,6 @@
 import { GraphQLSchema, defaultFieldResolver } from "graphql"
 import { mapSchema, getDirective, MapperKind } from "@graphql-tools/utils"
 
-import { redis } from "config"
-
 export const rateLimitDirectiveTransformer = (schema: GraphQLSchema) => {
 	return mapSchema(schema, {
 		[MapperKind.OBJECT_FIELD]: fieldConfig => {
@@ -13,6 +11,7 @@ export const rateLimitDirectiveTransformer = (schema: GraphQLSchema) => {
 				const { resolve = defaultFieldResolver } = fieldConfig
 				fieldConfig.resolve = async function (...args) {
 					const [_parent, _input, context, info] = args
+					const { redis } = context
 					const ip = context.req.headers["x-forwarded-for"]
 					const redisKey = `rateLimit-${key}:${ip}`
 					const [requestCount, ttl] = await Promise.all([redis.get(redisKey), redis.ttl(redisKey)])

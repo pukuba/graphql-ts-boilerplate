@@ -1,7 +1,7 @@
 import dotenv from "dotenv"
 dotenv.config()
 
-import { env, mongoDB } from "config"
+import { env, mongoDB, redis } from "config"
 import { express as voyagerMiddleware } from "graphql-voyager/middleware"
 import { ApolloServer } from "apollo-server-express"
 import { createServer, Server } from "http"
@@ -46,7 +46,7 @@ export default (async () => {
 	const server = new ApolloServer({
 		schema: Object.values(directives).reduce((schema, fn) => fn(schema), schema),
 		context: ({ req }) => {
-			return { db, req }
+			return { db, req, redis }
 		},
 		validationRules: [depthLimit(8)],
 		debug: env.NODE_ENV !== "production",

@@ -19,7 +19,10 @@ const expireFactory = (type: Token) => {
 
 const encode = (payload: object, type: Token) => sign(payload, env.JWT_SECRET, expireFactory(type))
 
-const decode = (token: string) => {
+const decode = (token?: string) => {
+	if (!token) {
+		return null
+	}
 	try {
 		return verify(token, env.JWT_SECRET)
 	} catch (err) {

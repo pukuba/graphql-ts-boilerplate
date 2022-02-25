@@ -13,15 +13,21 @@ export const authDirectiveTransformer = (schema: GraphQLSchema) => {
 				const { resolve = defaultFieldResolver } = fieldConfig
 				fieldConfig.resolve = async function (...args) {
 					const [_parent, _input, context, info] = args
-					const user = jwt.decode(context.req.headers.authorization)
+					const { redis } = context
+					const token = context.req.headers.authorization?.split("Bearer ")[1]
+					const user = jwt.decode(token)
+					const authorizationError = {
+						__typename: "AuthorizationError",
+						path: info.fieldName,
+						message: "You must be logged in to access this resource",
+					}
 					if (user === null) {
-						return {
-							__typename: "AuthorizationError",
-							message: "You must be logged in to access this resource",
-							path: info.fieldName,
-						}
+						return authorizationError
+					} else if ((await redis.get(`blacklist:${token}`)) !== null) {
+						return authorizationError
 					}
 					args[2].user = user
+					args[2].token = token
 					return resolve.apply(this, args)
 				}
 				return fieldConfig
