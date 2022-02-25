@@ -45,6 +45,7 @@
     "graphql-playground-middleware-express": "^1.7.23",
     "graphql-scalars": "^1.14.1",
     "graphql-upload": "^12.0.0",
+    "graphql-validation-complexity": "^0.4.2",
     "graphql-voyager": "^1.0.0-rc.31",
     "http": "0.0.1-security",
     "ioredis": "^4.28.5",
@@ -95,7 +96,7 @@
     "typescript": "^4.5.5"
   },
   "nyc": {
-    "exclude": ".yarn" 
+    "exclude": ".yarn"
   },
   "packageManager": "yarn@3.2.0"
 }

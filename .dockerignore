@@ -6,7 +6,6 @@ proxy
 .eslintrc.json
 .gitignore
 .prettierignore
-.travis.yml
 docker-compose.yml
 codegen.yml
 yarn-error.log
@@ -15,3 +14,4 @@ README.md
 *.ts
 .swc
 .swcrc
+@types

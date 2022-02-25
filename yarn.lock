@@ -5532,6 +5532,7 @@ __metadata:
     graphql-playground-middleware-express: ^1.7.23
     graphql-scalars: ^1.14.1
     graphql-upload: ^12.0.0
+    graphql-validation-complexity: ^0.4.2
     graphql-voyager: ^1.0.0-rc.31
     http: 0.0.1-security
     ioredis: ^4.28.5
@@ -5561,6 +5562,17 @@ __metadata:
   peerDependencies:
     graphql: 0.13.1 - 15
   checksum: 4d17cf4a16cfba940ca73487710093bc0013b06550168c1b84cb1f915c2df26e172faf9ed873ae4fc1cb547cd0d4d6e8ee607a35634355f128b3f161f64f0e1f
+  languageName: node
+  linkType: hard
+
+"graphql-validation-complexity@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "graphql-validation-complexity@npm:0.4.2"
+  dependencies:
+    warning: ^4.0.3
+  peerDependencies:
+    graphql: ">=0.9.5"
+  checksum: 93aefb7a946dc69e1d495563c6047c0c503d68affb146af6fb6daca67089bc6d33e631a3f58c18381f08e07514e793b4065abdf8313b586a17983d68435fc96a
   languageName: node
   linkType: hard
 
@@ -9910,7 +9922,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"warning@npm:^4.0.1":
+"warning@npm:^4.0.1, warning@npm:^4.0.3":
   version: 4.0.3
   resolution: "warning@npm:4.0.3"
   dependencies:

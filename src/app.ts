@@ -4,7 +4,7 @@ dotenv.config()
 import { env, mongoDB, redis } from "config"
 import { express as voyagerMiddleware } from "graphql-voyager/middleware"
 import { ApolloServer } from "apollo-server-express"
-import { createServer, Server } from "http"
+import * as http from "http"
 import depthLimit from "graphql-depth-limit"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import { GraphQLUpload } from "graphql-upload"
@@ -12,6 +12,7 @@ import { typeDefs as ScalarNameTypeDefinition, resolvers as scalarResolvers } fr
 import { constraintDirective, constraintDirectiveTypeDefs } from "graphql-constraint-directive"
 import { BaseRedisCache } from "apollo-server-cache-redis"
 import Redis from "ioredis"
+import { createComplexityLimitRule } from "graphql-validation-complexity"
 
 import { directives } from "shared"
 import { loadFilesSync } from "@graphql-tools/load-files"
@@ -25,6 +26,7 @@ import resolvers from "resolvers"
 
 const app = express()
 app.use(bodyParserGraphQL())
+app.disable("x-powered-by")
 if (env.NODE_ENV !== "production") {
 	app.use("/voyager", voyagerMiddleware({ endpointUrl: "/api" }))
 	app.use("/graphql", expressPlayground({ endpoint: "/api" }))
@@ -48,7 +50,7 @@ export default (async () => {
 		context: ({ req }) => {
 			return { db, req, redis }
 		},
-		validationRules: [depthLimit(8)],
+		validationRules: [depthLimit(8), createComplexityLimitRule(1000)],
 		debug: env.NODE_ENV !== "production",
 		introspection: env.NODE_ENV !== "production",
 		persistedQueries: {
@@ -67,7 +69,7 @@ export default (async () => {
 		path: "/api",
 	})
 
-	const httpServer = createServer(app)
+	const httpServer = http.createServer(app)
 	httpServer.timeout = 5000
-	return httpServer as Server
+	return httpServer as http.Server
 })()
