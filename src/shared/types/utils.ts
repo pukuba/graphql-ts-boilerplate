@@ -11,7 +11,7 @@ export interface FileInput {
 }
 
 import { Db } from "mongodb"
-import { User } from "config"
+import { User } from "shared"
 
 export interface Context {
 	db: Db

@@ -1,5 +1,5 @@
-import { Context, MutationRegisterArgs, MutationLoginArgs, RequireFields } from "config"
-import { createHashedPassword, checkPassword, jwt } from "shared"
+import { Context, MutationRegisterArgs, MutationLoginArgs, RequireFields } from "shared/types"
+import { createHashedPassword, checkPassword, jwt } from "shared/lib"
 
 export const register = async (parent: void, args: MutationRegisterArgs, ctx: Context) => {
 	const { email, password } = args.input
