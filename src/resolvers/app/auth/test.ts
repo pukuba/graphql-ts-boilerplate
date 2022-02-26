@@ -8,12 +8,12 @@ import {
 	User,
 	RegisterPayload,
 	AuthorizationError,
-	mongoDB,
+	jwt,
 	LoginInfo,
 	LoginPayload,
 	LogoutPayload,
-} from "config"
-import { jwt } from "shared"
+} from "shared"
+import { mongoDB } from "config"
 
 describe("Server auth test", () => {
 	let app: Server

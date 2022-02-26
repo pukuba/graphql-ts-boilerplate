@@ -1,7 +1,7 @@
 import dotenv from "dotenv"
 dotenv.config()
 
-import { env, mongoDB, redis } from "config"
+import { env, mongoDB, redis, loggingOption } from "config"
 import { express as voyagerMiddleware } from "graphql-voyager/middleware"
 import { ApolloServer } from "apollo-server-express"
 import * as http from "http"
@@ -26,11 +26,9 @@ import resolvers from "resolvers"
 
 const app = express()
 app.use(bodyParserGraphQL())
+app.use("/voyager", voyagerMiddleware({ endpointUrl: "/api" }))
+app.use("/graphql", expressPlayground({ endpoint: "/api" }))
 app.disable("x-powered-by")
-if (env.NODE_ENV !== "production") {
-	app.use("/voyager", voyagerMiddleware({ endpointUrl: "/api" }))
-	app.use("/graphql", expressPlayground({ endpoint: "/api" }))
-}
 
 const schema = constraintDirective()(
 	makeExecutableSchema({
@@ -42,6 +40,10 @@ const schema = constraintDirective()(
 		},
 	})
 )
+
+const plugins = []
+/* istanbul ignore next */
+env.NODE_ENV === "production" && plugins.push(loggingOption)
 
 export default (async () => {
 	const db = await mongoDB.get()
@@ -60,6 +62,7 @@ export default (async () => {
 				}),
 			}),
 		},
+		plugins: plugins,
 	})
 
 	await server.start()
