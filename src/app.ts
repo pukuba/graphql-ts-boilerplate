@@ -8,7 +8,7 @@ import * as http from "http"
 import depthLimit from "graphql-depth-limit"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import { GraphQLUpload } from "graphql-upload"
-import { typeDefs as ScalarNameTypeDefinition, resolvers as scalarResolvers } from "graphql-scalars"
+import { resolvers as scalarResolvers } from "graphql-scalars"
 import { constraintDirective, constraintDirectiveTypeDefs } from "graphql-constraint-directive"
 import { BaseRedisCache } from "apollo-server-cache-redis"
 import Redis from "ioredis"
@@ -32,13 +32,16 @@ app.disable("x-powered-by")
 
 const schema = constraintDirective()(
 	makeExecutableSchema({
-		typeDefs: [...typeDefs, ...ScalarNameTypeDefinition, constraintDirectiveTypeDefs],
+		typeDefs: [...typeDefs, constraintDirectiveTypeDefs],
 		resolvers: {
 			...resolvers,
-			...scalarResolvers,
+			DateTime: scalarResolvers.DateTime,
+			JWT: scalarResolvers.JWT,
+			EmailAddress: scalarResolvers.EmailAddress,
+			UnsignedInt: scalarResolvers.UnsignedInt,
 			Upload: GraphQLUpload,
 		},
-	})
+	}),
 )
 
 const plugins = []

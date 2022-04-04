@@ -116,3 +116,4 @@ dist
 !.yarn/cache
 
 .swc
+compare.txt
