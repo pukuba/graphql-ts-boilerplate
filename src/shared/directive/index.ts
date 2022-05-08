@@ -1,2 +1,2 @@
-export * from "shared/directive/auth"
-export * from "shared/directive/rateLimit"
+export * from "~/shared/directive/auth"
+export * from "~/shared/directive/rateLimit"

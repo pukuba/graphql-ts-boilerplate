@@ -1,6 +1,6 @@
 import { ReadStream } from "fs"
 import { Request } from "express"
-import { redis } from "config"
+import { redis } from "~/config"
 import { JwtPayload } from "jsonwebtoken"
 
 export interface FileInput {
@@ -11,7 +11,7 @@ export interface FileInput {
 }
 
 import { Db } from "mongodb"
-import { User } from "shared"
+import { User } from "~/shared"
 
 export interface Context {
 	db: Db

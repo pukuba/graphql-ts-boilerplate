@@ -1,6 +1,6 @@
 import { expect } from "chai"
 import request from "supertest"
-import appPromise from "app"
+import appPromise from "~/app"
 import { Server } from "http"
 import { Db } from "mongodb"
 import {
@@ -12,8 +12,8 @@ import {
 	LoginInfo,
 	LoginPayload,
 	LogoutPayload,
-} from "shared"
-import { mongoDB } from "config"
+} from "~/shared"
+import { mongoDB } from "~/config"
 
 describe("Server auth test", () => {
 	let app: Server
@@ -46,7 +46,9 @@ describe("Server auth test", () => {
 					.post("/api")
 					.send({
 						query,
-						variables: { input: { email: "pukuba@kakao.com", password: "test1234" } },
+						variables: {
+							input: { email: "pukuba@kakao.com", password: "test1234" },
+						},
 					})
 					.expect(200)
 				const data = response.body.data.register as RegisterPayload as User
@@ -62,10 +64,13 @@ describe("Server auth test", () => {
 					.post("/api")
 					.send({
 						query,
-						variables: { input: { email: "pukuba@kakao.com", password: "test1234" } },
+						variables: {
+							input: { email: "pukuba@kakao.com", password: "test1234" },
+						},
 					})
 					.expect(200)
-				const data = response.body.data.register as RegisterPayload as AuthorizationError
+				const data = response.body.data
+					.register as RegisterPayload as AuthorizationError
 				expect(data).to.be.deep.equal({
 					__typename: "DuplicateEmailError",
 					message: "Email already exists",
@@ -103,7 +108,9 @@ describe("Server auth test", () => {
 					.post("/api")
 					.send({
 						query,
-						variables: { input: { email: "pukuba@kakao.com", password: "test1234" } },
+						variables: {
+							input: { email: "pukuba@kakao.com", password: "test1234" },
+						},
 					})
 					.expect(200)
 				const data = response.body.data.login as LoginPayload as LoginInfo
@@ -118,10 +125,13 @@ describe("Server auth test", () => {
 					.post("/api")
 					.send({
 						query,
-						variables: { input: { email: "test@ruu.kr", password: "test1234" } },
+						variables: {
+							input: { email: "test@ruu.kr", password: "test1234" },
+						},
 					})
 					.expect(200)
-				const data = response.body.data.login as LoginPayload as AuthorizationError
+				const data = response.body.data
+					.login as LoginPayload as AuthorizationError
 				expect(data).to.be.deep.equal({
 					__typename: "InvalidAccountError",
 					path: "login",
@@ -134,25 +144,31 @@ describe("Server auth test", () => {
 					.post("/api")
 					.send({
 						query,
-						variables: { input: { email: "pukuba@kakao.com", password: "ts1231" } },
+						variables: {
+							input: { email: "pukuba@kakao.com", password: "ts1231" },
+						},
 					})
 					.expect(200)
-				const data = response.body.data.login as LoginPayload as AuthorizationError
+				const data = response.body.data
+					.login as LoginPayload as AuthorizationError
 				expect(data).to.be.deep.equal({
 					__typename: "InvalidAccountError",
 					path: "login",
-					message: "해당 이메일에 존재하는 계정과 입력하신 비밀번호가 일치하지 않습니다",
+					message:
+						"해당 이메일에 존재하는 계정과 입력하신 비밀번호가 일치하지 않습니다",
 					suggestion: "비밀번호를 정확하게 입력해주세요",
 				})
 			})
 			it("Should return a RateLimitError", async () => {
-				return new Promise(resolve => {
+				return new Promise((resolve) => {
 					const intervalId = setInterval(async () => {
 						const { body } = await request(app)
 							.post("/api")
 							.send({
 								query,
-								variables: { input: { email: "pukuba@kakao.com", password: "test25" } },
+								variables: {
+									input: { email: "pukuba@kakao.com", password: "test25" },
+								},
 							})
 							.expect(200)
 						if (body.data.login.__typename === "RateLimitError") {
@@ -188,7 +204,10 @@ describe("Server auth test", () => {
 					.send({ query })
 					.expect(200)
 				const data = response.body.data.logout as LogoutPayload as User
-				expect(data).to.be.deep.equal({ __typename: "User", email: "pukuba@kakao.com" })
+				expect(data).to.be.deep.equal({
+					__typename: "User",
+					email: "pukuba@kakao.com",
+				})
 			})
 		})
 		describe("Failure", () => {
@@ -198,7 +217,8 @@ describe("Server auth test", () => {
 					.set("Authorization", `Bearer ${token}`)
 					.send({ query })
 					.expect(200)
-				const data = response.body.data.logout as LogoutPayload as AuthorizationError
+				const data = response.body.data
+					.logout as LogoutPayload as AuthorizationError
 				expect(data).to.be.deep.equal({
 					__typename: "AuthorizationError",
 					path: "logout",
@@ -228,26 +248,38 @@ describe("Server auth test", () => {
 		describe("Success", () => {
 			it("Should return a User", async () => {
 				const tmpToken = jwt.encode(
-					{ email: "pukuba@kakao.com", updatedAt: Date.now(), createdAt: Date.now() },
-					"user"
+					{
+						email: "pukuba@kakao.com",
+						updatedAt: Date.now(),
+						createdAt: Date.now(),
+					},
+					"user",
 				)
 				const response = await request(app)
 					.post("/api")
 					.set("Authorization", `Bearer ${tmpToken}`)
 					.send({ query })
 					.expect(200)
-				const data = response.body.data.isAuthorized as IsAuthorizedPayload as User
+				const data = response.body.data
+					.isAuthorized as IsAuthorizedPayload as User
 				const { email, __typename, ...date } = data
 				expect(email).to.be.equal("pukuba@kakao.com")
-				expect(date).to.be.a("object").and.to.be.have.keys("updatedAt", "createdAt")
+				expect(date)
+					.to.be.a("object")
+					.and.to.be.have.keys("updatedAt", "createdAt")
 				expect(__typename).to.be.equal("User")
 			})
 		})
 
 		describe("Failure", () => {
 			it("Should return an AuthorizationError", async () => {
-				const response = await request(app).post("/api").send({ query }).set("Authorization", token).expect(200)
-				const data = response.body.data.isAuthorized as IsAuthorizedPayload as AuthorizationError
+				const response = await request(app)
+					.post("/api")
+					.send({ query })
+					.set("Authorization", token)
+					.expect(200)
+				const data = response.body.data
+					.isAuthorized as IsAuthorizedPayload as AuthorizationError
 				expect(data).to.be.deep.equal({
 					message: "You must be logged in to access this resource",
 					path: "isAuthorized",

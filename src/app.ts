@@ -1,7 +1,7 @@
 import dotenv from "dotenv"
 dotenv.config()
 
-import { env, mongoDB, redis, loggingOption } from "config"
+import { env, mongoDB, redis, loggingOption } from "~/config"
 import { express as voyagerMiddleware } from "graphql-voyager/middleware"
 import { ApolloServer } from "apollo-server-express"
 import * as http from "http"
@@ -9,12 +9,15 @@ import depthLimit from "graphql-depth-limit"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import { GraphQLUpload } from "graphql-upload"
 import { resolvers as scalarResolvers } from "graphql-scalars"
-import { constraintDirective, constraintDirectiveTypeDefs } from "graphql-constraint-directive"
+import {
+	constraintDirective,
+	constraintDirectiveTypeDefs,
+} from "graphql-constraint-directive"
 import { BaseRedisCache } from "apollo-server-cache-redis"
 import Redis from "ioredis"
 import { createComplexityLimitRule } from "graphql-validation-complexity"
 
-import { directives } from "shared"
+import { directives } from "~/shared"
 import { loadFilesSync } from "@graphql-tools/load-files"
 const typeDefs = loadFilesSync("src/**/*.graphql")
 
@@ -22,7 +25,7 @@ import express from "express"
 import expressPlayground from "graphql-playground-middleware-express"
 import { bodyParserGraphQL } from "body-parser-graphql"
 
-import resolvers from "resolvers"
+import resolvers from "~/resolvers"
 
 const app = express()
 app.use(bodyParserGraphQL())
@@ -51,7 +54,10 @@ env.NODE_ENV === "production" && plugins.push(loggingOption)
 export default (async () => {
 	const db = await mongoDB.get()
 	const server = new ApolloServer({
-		schema: Object.values(directives).reduce((schema, fn) => fn(schema), schema),
+		schema: Object.values(directives).reduce(
+			(schema, fn) => fn(schema),
+			schema,
+		),
 		context: ({ req }) => {
 			return { db, req, redis }
 		},

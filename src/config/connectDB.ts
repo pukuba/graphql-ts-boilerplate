@@ -1,18 +1,23 @@
 /* istanbul ignore file */
 
-import { env } from "config"
+import { env } from "~/config"
 import { MongoClient, Db } from "mongodb"
 
 let db: Db | null = null
 const connectDB = () => {
 	const connect = async () => {
 		try {
-			const client = await MongoClient.connect(process.env.DB_HOST || env.DB_HOST, {
-				useNewUrlParser: true,
-				useUnifiedTopology: true,
-			})
+			const client = await MongoClient.connect(
+				process.env.DB_HOST || env.DB_HOST,
+				{
+					useNewUrlParser: true,
+					useUnifiedTopology: true,
+				},
+			)
 			const _db = client.db()
-			await Promise.all([_db.collection("user").createIndex({ email: 1 }, { unique: true })])
+			await Promise.all([
+				_db.collection("user").createIndex({ email: 1 }, { unique: true }),
+			])
 			return _db
 		} catch (e) {
 			console.error(e)

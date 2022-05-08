@@ -1,12 +1,16 @@
 import { GraphQLSchema, defaultFieldResolver } from "graphql"
 import { mapSchema, getDirective, MapperKind } from "@graphql-tools/utils"
 
-import { jwt } from "shared"
+import { jwt } from "~/shared"
 
 export const authDirectiveTransformer = (schema: GraphQLSchema) => {
 	return mapSchema(schema, {
-		[MapperKind.OBJECT_FIELD]: fieldConfig => {
-			const authDirective = getDirective(schema, fieldConfig, "isAuthenticated")?.[0]
+		[MapperKind.OBJECT_FIELD]: (fieldConfig) => {
+			const authDirective = getDirective(
+				schema,
+				fieldConfig,
+				"isAuthenticated",
+			)?.[0]
 
 			if (authDirective) {
 				/* istanbul ignore next */

@@ -1,2 +1,2 @@
-export * from "shared/lib/jwt"
-export * from "shared/lib/crypto"
+export * from "~/shared/lib/jwt"
+export * from "~/shared/lib/crypto"

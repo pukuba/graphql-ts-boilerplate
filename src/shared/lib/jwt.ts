@@ -1,5 +1,5 @@
 import { verify, sign } from "jsonwebtoken"
-import { env } from "config"
+import { env } from "~/config"
 
 type Token = "user" | "emailCert" | "smsCert"
 
@@ -17,7 +17,8 @@ const expireFactory = (type: Token) => {
 	}
 }
 
-const encode = (payload: object, type: Token) => sign(payload, env.JWT_SECRET, expireFactory(type))
+const encode = (payload: object, type: Token) =>
+	sign(payload, env.JWT_SECRET, expireFactory(type))
 
 const decode = (token?: string) => {
 	if (!token) {

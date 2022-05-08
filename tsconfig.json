@@ -6,13 +6,15 @@
         "outDir": "dist",
         "strict": true,
         "esModuleInterop": true,
-        "baseUrl": "src",
+        "baseUrl": "./",
         "typeRoots": [
             "./node_modules/@types",
             "./@types"
-        ]
+        ],
+        "paths":{
+            "~/*":["./src/*"]
+        }
     },
-    "include": [
-        "src/**/*",
-    ]
+    "exclude":["node_modules", "dist", "tmp"],
+    "include": ["src", "test"]
 }

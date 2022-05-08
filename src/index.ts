@@ -1,5 +1,5 @@
-import app from "app"
-import { env } from "config"
+import app from "~/app"
+import { env } from "~/config"
 ;(async () => {
 	const server = await app
 	server.listen(env.PORT, () => {

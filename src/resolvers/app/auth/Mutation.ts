@@ -1,7 +1,16 @@
-import { Context, MutationRegisterArgs, MutationLoginArgs, RequireFields } from "shared/types"
-import { createHashedPassword, checkPassword, jwt } from "shared/lib"
+import {
+	Context,
+	MutationRegisterArgs,
+	MutationLoginArgs,
+	RequireFields,
+} from "~/shared/types"
+import { createHashedPassword, checkPassword, jwt } from "~/shared/lib"
 
-export const register = async (parent: void, args: MutationRegisterArgs, ctx: Context) => {
+export const register = async (
+	parent: void,
+	args: MutationRegisterArgs,
+	ctx: Context,
+) => {
 	const { email, password } = args.input
 	const exists = await ctx.db.collection("user").findOne({ email })
 	if (exists) {
@@ -27,7 +36,11 @@ export const register = async (parent: void, args: MutationRegisterArgs, ctx: Co
 	}
 }
 
-export const login = async (parent: void, args: MutationLoginArgs, ctx: Context) => {
+export const login = async (
+	parent: void,
+	args: MutationLoginArgs,
+	ctx: Context,
+) => {
 	const { email, password } = args.input
 	const user = await ctx.db.collection("user").findOne({ email })
 	const LoginError = { __typename: "InvalidAccountError", path: "login" }
@@ -41,13 +54,18 @@ export const login = async (parent: void, args: MutationLoginArgs, ctx: Context)
 	if (checkPassword(password, user.password) === false) {
 		return {
 			...LoginError,
-			message: "해당 이메일에 존재하는 계정과 입력하신 비밀번호가 일치하지 않습니다",
+			message:
+				"해당 이메일에 존재하는 계정과 입력하신 비밀번호가 일치하지 않습니다",
 			suggestion: "비밀번호를 정확하게 입력해주세요",
 		}
 	}
 	const document = await ctx.db
 		.collection("user")
-		.findOneAndUpdate({ email }, { $set: { updatedAt: Date.now() } }, { returnDocument: "after" })
+		.findOneAndUpdate(
+			{ email },
+			{ $set: { updatedAt: Date.now() } },
+			{ returnDocument: "after" },
+		)
 
 	const { updatedAt, createdAt } = document.value
 	return {
@@ -57,7 +75,11 @@ export const login = async (parent: void, args: MutationLoginArgs, ctx: Context)
 	}
 }
 
-export const logout = async (parent: void, args: MutationLoginArgs, ctx: RequireFields<Context, "user">) => {
+export const logout = async (
+	parent: void,
+	args: MutationLoginArgs,
+	ctx: RequireFields<Context, "user">,
+) => {
 	const progress = Math.floor(Date.now() / 1000) - ctx.user.iat
 	/** 1 day = 86400 sec */
 	const exp = 60 * 60 * 24

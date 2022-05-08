@@ -1,6 +1,6 @@
 import { expect } from "chai"
 import request from "supertest"
-import appPromise from "app"
+import appPromise from "~/app"
 import { Server } from "http"
 
 describe("Server running test", () => {
@@ -11,7 +11,9 @@ describe("Server running test", () => {
 
 	describe("Apollo-Server-Express Core", () => {
 		it("should return http status code 200", async () => {
-			await request(app).get("/.well-known/apollo/server-health").expect(200, { status: "pass" })
+			await request(app)
+				.get("/.well-known/apollo/server-health")
+				.expect(200, { status: "pass" })
 		})
 	})
 
@@ -19,16 +21,20 @@ describe("Server running test", () => {
 		describe("Success", () => {
 			it("Should be return http status code 200", async () => {
 				const query = "{healthLive}"
-				const { body } = await request(app).get(`/api?query=${query}`).expect(200)
+				const { body } = await request(app)
+					.get(`/api?query=${query}`)
+					.expect(200)
 				expect(body.data.healthLive).to.be.a("string")
 			})
 		})
 		describe("Failure", () => {
 			it("Should be return http status code 400", async () => {
 				const query = "query{healthLive1}"
-				const { body } = await request(app).get(`/api?query=${query}`).expect(400)
+				const { body } = await request(app)
+					.get(`/api?query=${query}`)
+					.expect(400)
 				expect(body.errors[0].message).to.be.equal(
-					'Cannot query field "healthLive1" on type "Query". Did you mean "healthLive"?'
+					'Cannot query field "healthLive1" on type "Query". Did you mean "healthLive"?',
 				)
 			})
 		})
@@ -57,7 +63,7 @@ describe("Server running test", () => {
 					.send({ query, variables: { input: { data: "pong" } } })
 					.expect(400)
 				expect(body.errors[0].message).to.be.equal(
-					'Variable "$input" got invalid value "pong" at "input.data"; Expected type "HealthCheck". Must match ^ping$'
+					'Variable "$input" got invalid value "pong" at "input.data"; Expected type "HealthCheck". Must match ^ping$',
 				)
 			})
 		})
