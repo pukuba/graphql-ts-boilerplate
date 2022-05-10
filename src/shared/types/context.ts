@@ -1,19 +1,10 @@
-import { ReadStream } from "fs"
 import { Request } from "express"
 import { redis } from "~/config"
 import { JwtPayload } from "jsonwebtoken"
-
-export interface FileInput {
-	filename: string
-	mimetype: string
-	encoding: string
-	createReadStream: () => ReadStream
-}
-
 import { Db } from "mongodb"
-import { User } from "~/shared"
+import { User } from "~/shared/__generated__"
 
-export interface Context {
+export interface ApolloContext {
 	db: Db
 	redis: typeof redis
 	req: Request

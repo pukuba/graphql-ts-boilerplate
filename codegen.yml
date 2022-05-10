@@ -1,7 +1,30 @@
 overwrite: true
-schema: "src/**/*.graphql"
 generates:
-  src/shared/types/models.ts:
+  src/shared/__generated__/schema.graphql:
+    schema: ./src/**/*.graphql
     plugins:
-      - "typescript"
-      - "typescript-resolvers"
+      - schema-ast
+    config:
+      includeDirectives: true
+  src/shared/__generated__/types.ts:
+    schema: "src/**/*.graphql"
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - 'typescript'
+      - 'typescript-resolvers'
+    config:
+      contextType: ../types#ApolloContext
+      noNamespaces: true
+  src/shared/__generated__/typeDefs.ts:
+    schema: "src/**/*.graphql"
+    plugins:
+      - add:
+          content: |
+            const typeDefs = `
+      - schema-ast
+      - add:
+          placement: 'append'
+          content: |
+            `
+            export default typeDefs

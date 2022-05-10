@@ -1,4 +1,6 @@
+/* eslint-disable */
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import { ApolloContext } from '../types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -259,11 +261,11 @@ export type CacheControlDirectiveArgs = {
   scope?: Maybe<CacheControlScope>;
 };
 
-export type CacheControlDirectiveResolver<Result, Parent, ContextType = any, Args = CacheControlDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type CacheControlDirectiveResolver<Result, Parent, ContextType = ApolloContext, Args = CacheControlDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type IsAuthenticatedDirectiveArgs = { };
 
-export type IsAuthenticatedDirectiveResolver<Result, Parent, ContextType = any, Args = IsAuthenticatedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type IsAuthenticatedDirectiveResolver<Result, Parent, ContextType = ApolloContext, Args = IsAuthenticatedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type RateLimitDirectiveArgs = {
   key: Scalars['String'];
@@ -271,9 +273,9 @@ export type RateLimitDirectiveArgs = {
   time: Scalars['UnsignedInt'];
 };
 
-export type RateLimitDirectiveResolver<Result, Parent, ContextType = any, Args = RateLimitDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type RateLimitDirectiveResolver<Result, Parent, ContextType = ApolloContext, Args = RateLimitDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type AuthorizationErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthorizationError'] = ResolversParentTypes['AuthorizationError']> = {
+export type AuthorizationErrorResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['AuthorizationError'] = ResolversParentTypes['AuthorizationError']> = {
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -283,7 +285,7 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
   name: 'DateTime';
 }
 
-export type DuplicateEmailErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['DuplicateEmailError'] = ResolversParentTypes['DuplicateEmailError']> = {
+export type DuplicateEmailErrorResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['DuplicateEmailError'] = ResolversParentTypes['DuplicateEmailError']> = {
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   suggestion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -294,27 +296,27 @@ export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<Resolv
   name: 'EmailAddress';
 }
 
-export type ErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Error'] = ResolversParentTypes['Error']> = {
+export type ErrorResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Error'] = ResolversParentTypes['Error']> = {
   __resolveType: TypeResolveFn<'AuthorizationError' | 'DuplicateEmailError' | 'InvalidAccountError' | 'RateLimitError', ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
-export type FileResolvers<ContextType = any, ParentType extends ResolversParentTypes['File'] = ResolversParentTypes['File']> = {
+export type FileResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['File'] = ResolversParentTypes['File']> = {
   encoding?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   filename?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   mimetype?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InvalidAccountErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['InvalidAccountError'] = ResolversParentTypes['InvalidAccountError']> = {
+export type InvalidAccountErrorResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['InvalidAccountError'] = ResolversParentTypes['InvalidAccountError']> = {
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   suggestion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type IsAuthorizedPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['IsAuthorizedPayload'] = ResolversParentTypes['IsAuthorizedPayload']> = {
+export type IsAuthorizedPayloadResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['IsAuthorizedPayload'] = ResolversParentTypes['IsAuthorizedPayload']> = {
   __resolveType: TypeResolveFn<'AuthorizationError' | 'User', ParentType, ContextType>;
 };
 
@@ -322,40 +324,40 @@ export interface JwtScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
   name: 'JWT';
 }
 
-export type LoginInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['LoginInfo'] = ResolversParentTypes['LoginInfo']> = {
+export type LoginInfoResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['LoginInfo'] = ResolversParentTypes['LoginInfo']> = {
   token?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LoginPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['LoginPayload'] = ResolversParentTypes['LoginPayload']> = {
+export type LoginPayloadResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['LoginPayload'] = ResolversParentTypes['LoginPayload']> = {
   __resolveType: TypeResolveFn<'InvalidAccountError' | 'LoginInfo' | 'RateLimitError', ParentType, ContextType>;
 };
 
-export type LogoutPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['LogoutPayload'] = ResolversParentTypes['LogoutPayload']> = {
+export type LogoutPayloadResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['LogoutPayload'] = ResolversParentTypes['LogoutPayload']> = {
   __resolveType: TypeResolveFn<'AuthorizationError' | 'User', ParentType, ContextType>;
 };
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+export type MutationResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   healthCheck?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationHealthCheckArgs, 'input'>>;
   login?: Resolver<ResolversTypes['LoginPayload'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
   logout?: Resolver<ResolversTypes['LogoutPayload'], ParentType, ContextType>;
   register?: Resolver<ResolversTypes['RegisterPayload'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'input'>>;
 };
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+export type QueryResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   healthLive?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   isAuthorized?: Resolver<ResolversTypes['IsAuthorizedPayload'], ParentType, ContextType>;
 };
 
-export type RateLimitErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['RateLimitError'] = ResolversParentTypes['RateLimitError']> = {
+export type RateLimitErrorResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['RateLimitError'] = ResolversParentTypes['RateLimitError']> = {
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   ttl?: Resolver<ResolversTypes['UnsignedInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RegisterPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['RegisterPayload'] = ResolversParentTypes['RegisterPayload']> = {
+export type RegisterPayloadResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['RegisterPayload'] = ResolversParentTypes['RegisterPayload']> = {
   __resolveType: TypeResolveFn<'DuplicateEmailError' | 'User', ParentType, ContextType>;
 };
 
@@ -367,14 +369,14 @@ export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
   name: 'Upload';
 }
 
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+export type UserResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type Resolvers<ContextType = any> = {
+export type Resolvers<ContextType = ApolloContext> = {
   AuthorizationError?: AuthorizationErrorResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   DuplicateEmailError?: DuplicateEmailErrorResolvers<ContextType>;
@@ -396,7 +398,7 @@ export type Resolvers<ContextType = any> = {
   User?: UserResolvers<ContextType>;
 };
 
-export type DirectiveResolvers<ContextType = any> = {
+export type DirectiveResolvers<ContextType = ApolloContext> = {
   cacheControl?: CacheControlDirectiveResolver<any, any, ContextType>;
   isAuthenticated?: IsAuthenticatedDirectiveResolver<any, any, ContextType>;
   rateLimit?: RateLimitDirectiveResolver<any, any, ContextType>;
