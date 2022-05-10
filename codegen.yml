@@ -1,13 +1,17 @@
 overwrite: true
 generates:
   src/shared/__generated__/schema.graphql:
-    schema: ./src/**/*.graphql
+    schema: 
+      - ./src/resolvers/**/*.graphql
+      - ./src/shared/directive/*.graphql
     plugins:
       - schema-ast
     config:
       includeDirectives: true
   src/shared/__generated__/types.ts:
-    schema: "src/**/*.graphql"
+    schema: 
+      - ./src/resolvers/**/*.graphql
+      - ./src/shared/directive/*.graphql
     plugins:
       - add:
           content: '/* eslint-disable */'
@@ -17,7 +21,9 @@ generates:
       contextType: ../types#ApolloContext
       noNamespaces: true
   src/shared/__generated__/typeDefs.ts:
-    schema: "src/**/*.graphql"
+    schema: 
+      - ./src/resolvers/**/*.graphql
+      - ./src/shared/directive/*.graphql
     plugins:
       - add:
           content: |

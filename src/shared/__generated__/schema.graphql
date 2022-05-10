@@ -1,104 +1,12 @@
 schema {
   query: Query
-  mutation: Mutation
 }
 
-directive @cacheControl(inheritMaxAge: Boolean, maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | INTERFACE | OBJECT | UNION
-
-directive @isAuthenticated on FIELD_DEFINITION
-
-directive @rateLimit(key: String!, limit: UnsignedInt!, time: UnsignedInt!) on FIELD_DEFINITION
-
-type AuthorizationError implements Error {
-  message: String!
-  path: String!
-}
-
-enum CacheControlScope {
-  PRIVATE
-  PUBLIC
-}
-
-scalar DateTime
-
-type DuplicateEmailError implements Error {
-  message: String!
-  path: String!
-  suggestion: String!
-}
-
-scalar EmailAddress
-
-interface Error {
-  message: String!
-  path: String!
-}
-
-type File {
-  encoding: String!
-  filename: String!
-  mimetype: String!
-}
-
-input HealthCheckInput {
-  data: String! @constraint(pattern: "^ping$", uniqueTypeName: "HealthCheck")
-}
-
-type InvalidAccountError implements Error {
-  message: String!
-  path: String!
-  suggestion: String!
-}
-
-union IsAuthorizedPayload = AuthorizationError | User
-
-scalar JWT
-
-type LoginInfo {
-  token: JWT!
-  user: User!
-}
-
-input LoginInput {
-  email: EmailAddress!
-  password: String! @constraint(pattern: "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$", uniqueTypeName: "Password")
-}
-
-union LoginPayload = InvalidAccountError | LoginInfo | RateLimitError
-
-union LogoutPayload = AuthorizationError | User
-
-type Mutation {
-  healthCheck(input: HealthCheckInput!): String!
-  login(input: LoginInput!): LoginPayload! @rateLimit(time: 60, key: "login", limit: 5)
-  logout: LogoutPayload! @isAuthenticated
-  register(input: RegisterInput!): RegisterPayload!
-}
+directive @rateLimit(key: String!, limit: Int!, time: Int!) on FIELD_DEFINITION
 
 type Query {
-  healthLive: DateTime!
-  isAuthorized: IsAuthorizedPayload! @isAuthenticated
-}
-
-type RateLimitError implements Error {
-  message: String!
-  path: String!
-  ttl: UnsignedInt!
-}
-
-input RegisterInput {
-  email: EmailAddress!
-  password: String! @constraint(pattern: "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$", uniqueTypeName: "Password")
-}
-
-union RegisterPayload = DuplicateEmailError | User
-
-scalar UnsignedInt
-
-scalar Upload
-
-type User {
-  createdAt: DateTime!
-  email: EmailAddress!
-  updatedAt: DateTime!
+  """서버의 현재 시간을 반환하는 쿼리"""
+  live: String!
+  """항상 true를 반환하는 ping 쿼리"""
+  ping: Boolean!
 }

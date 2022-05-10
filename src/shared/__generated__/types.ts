@@ -1,12 +1,11 @@
 /* eslint-disable */
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import { GraphQLResolveInfo } from 'graphql';
 import { ApolloContext } from '../types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -14,119 +13,14 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  DateTime: any;
-  EmailAddress: any;
-  JWT: any;
-  UnsignedInt: any;
-  Upload: any;
-};
-
-export type AuthorizationError = Error & {
-  __typename?: 'AuthorizationError';
-  message: Scalars['String'];
-  path: Scalars['String'];
-};
-
-export enum CacheControlScope {
-  Private = 'PRIVATE',
-  Public = 'PUBLIC'
-}
-
-export type DuplicateEmailError = Error & {
-  __typename?: 'DuplicateEmailError';
-  message: Scalars['String'];
-  path: Scalars['String'];
-  suggestion: Scalars['String'];
-};
-
-export type Error = {
-  message: Scalars['String'];
-  path: Scalars['String'];
-};
-
-export type File = {
-  __typename?: 'File';
-  encoding: Scalars['String'];
-  filename: Scalars['String'];
-  mimetype: Scalars['String'];
-};
-
-export type HealthCheckInput = {
-  data: Scalars['String'];
-};
-
-export type InvalidAccountError = Error & {
-  __typename?: 'InvalidAccountError';
-  message: Scalars['String'];
-  path: Scalars['String'];
-  suggestion: Scalars['String'];
-};
-
-export type IsAuthorizedPayload = AuthorizationError | User;
-
-export type LoginInfo = {
-  __typename?: 'LoginInfo';
-  token: Scalars['JWT'];
-  user: User;
-};
-
-export type LoginInput = {
-  email: Scalars['EmailAddress'];
-  password: Scalars['String'];
-};
-
-export type LoginPayload = InvalidAccountError | LoginInfo | RateLimitError;
-
-export type LogoutPayload = AuthorizationError | User;
-
-export type Mutation = {
-  __typename?: 'Mutation';
-  healthCheck: Scalars['String'];
-  login: LoginPayload;
-  logout: LogoutPayload;
-  register: RegisterPayload;
-};
-
-
-export type MutationHealthCheckArgs = {
-  input: HealthCheckInput;
-};
-
-
-export type MutationLoginArgs = {
-  input: LoginInput;
-};
-
-
-export type MutationRegisterArgs = {
-  input: RegisterInput;
 };
 
 export type Query = {
   __typename?: 'Query';
-  healthLive: Scalars['DateTime'];
-  isAuthorized: IsAuthorizedPayload;
-};
-
-export type RateLimitError = Error & {
-  __typename?: 'RateLimitError';
-  message: Scalars['String'];
-  path: Scalars['String'];
-  ttl: Scalars['UnsignedInt'];
-};
-
-export type RegisterInput = {
-  email: Scalars['EmailAddress'];
-  password: Scalars['String'];
-};
-
-export type RegisterPayload = DuplicateEmailError | User;
-
-export type User = {
-  __typename?: 'User';
-  createdAt: Scalars['DateTime'];
-  email: Scalars['EmailAddress'];
-  updatedAt: Scalars['DateTime'];
+  /** 서버의 현재 시간을 반환하는 쿼리 */
+  live: Scalars['String'];
+  /** 항상 true를 반환하는 ping 쿼리 */
+  ping: Scalars['Boolean'];
 };
 
 
@@ -198,208 +92,37 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  AuthorizationError: ResolverTypeWrapper<AuthorizationError>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  CacheControlScope: CacheControlScope;
-  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
-  DuplicateEmailError: ResolverTypeWrapper<DuplicateEmailError>;
-  EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
-  Error: ResolversTypes['AuthorizationError'] | ResolversTypes['DuplicateEmailError'] | ResolversTypes['InvalidAccountError'] | ResolversTypes['RateLimitError'];
-  File: ResolverTypeWrapper<File>;
-  HealthCheckInput: HealthCheckInput;
   Int: ResolverTypeWrapper<Scalars['Int']>;
-  InvalidAccountError: ResolverTypeWrapper<InvalidAccountError>;
-  IsAuthorizedPayload: ResolversTypes['AuthorizationError'] | ResolversTypes['User'];
-  JWT: ResolverTypeWrapper<Scalars['JWT']>;
-  LoginInfo: ResolverTypeWrapper<LoginInfo>;
-  LoginInput: LoginInput;
-  LoginPayload: ResolversTypes['InvalidAccountError'] | ResolversTypes['LoginInfo'] | ResolversTypes['RateLimitError'];
-  LogoutPayload: ResolversTypes['AuthorizationError'] | ResolversTypes['User'];
-  Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
-  RateLimitError: ResolverTypeWrapper<RateLimitError>;
-  RegisterInput: RegisterInput;
-  RegisterPayload: ResolversTypes['DuplicateEmailError'] | ResolversTypes['User'];
   String: ResolverTypeWrapper<Scalars['String']>;
-  UnsignedInt: ResolverTypeWrapper<Scalars['UnsignedInt']>;
-  Upload: ResolverTypeWrapper<Scalars['Upload']>;
-  User: ResolverTypeWrapper<User>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  AuthorizationError: AuthorizationError;
   Boolean: Scalars['Boolean'];
-  DateTime: Scalars['DateTime'];
-  DuplicateEmailError: DuplicateEmailError;
-  EmailAddress: Scalars['EmailAddress'];
-  Error: ResolversParentTypes['AuthorizationError'] | ResolversParentTypes['DuplicateEmailError'] | ResolversParentTypes['InvalidAccountError'] | ResolversParentTypes['RateLimitError'];
-  File: File;
-  HealthCheckInput: HealthCheckInput;
   Int: Scalars['Int'];
-  InvalidAccountError: InvalidAccountError;
-  IsAuthorizedPayload: ResolversParentTypes['AuthorizationError'] | ResolversParentTypes['User'];
-  JWT: Scalars['JWT'];
-  LoginInfo: LoginInfo;
-  LoginInput: LoginInput;
-  LoginPayload: ResolversParentTypes['InvalidAccountError'] | ResolversParentTypes['LoginInfo'] | ResolversParentTypes['RateLimitError'];
-  LogoutPayload: ResolversParentTypes['AuthorizationError'] | ResolversParentTypes['User'];
-  Mutation: {};
   Query: {};
-  RateLimitError: RateLimitError;
-  RegisterInput: RegisterInput;
-  RegisterPayload: ResolversParentTypes['DuplicateEmailError'] | ResolversParentTypes['User'];
   String: Scalars['String'];
-  UnsignedInt: Scalars['UnsignedInt'];
-  Upload: Scalars['Upload'];
-  User: User;
 };
-
-export type CacheControlDirectiveArgs = {
-  inheritMaxAge?: Maybe<Scalars['Boolean']>;
-  maxAge?: Maybe<Scalars['Int']>;
-  scope?: Maybe<CacheControlScope>;
-};
-
-export type CacheControlDirectiveResolver<Result, Parent, ContextType = ApolloContext, Args = CacheControlDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type IsAuthenticatedDirectiveArgs = { };
-
-export type IsAuthenticatedDirectiveResolver<Result, Parent, ContextType = ApolloContext, Args = IsAuthenticatedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type RateLimitDirectiveArgs = {
   key: Scalars['String'];
-  limit: Scalars['UnsignedInt'];
-  time: Scalars['UnsignedInt'];
+  limit: Scalars['Int'];
+  time: Scalars['Int'];
 };
 
 export type RateLimitDirectiveResolver<Result, Parent, ContextType = ApolloContext, Args = RateLimitDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type AuthorizationErrorResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['AuthorizationError'] = ResolversParentTypes['AuthorizationError']> = {
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
-  name: 'DateTime';
-}
-
-export type DuplicateEmailErrorResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['DuplicateEmailError'] = ResolversParentTypes['DuplicateEmailError']> = {
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  suggestion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
-  name: 'EmailAddress';
-}
-
-export type ErrorResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Error'] = ResolversParentTypes['Error']> = {
-  __resolveType: TypeResolveFn<'AuthorizationError' | 'DuplicateEmailError' | 'InvalidAccountError' | 'RateLimitError', ParentType, ContextType>;
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-};
-
-export type FileResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['File'] = ResolversParentTypes['File']> = {
-  encoding?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  filename?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mimetype?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type InvalidAccountErrorResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['InvalidAccountError'] = ResolversParentTypes['InvalidAccountError']> = {
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  suggestion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type IsAuthorizedPayloadResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['IsAuthorizedPayload'] = ResolversParentTypes['IsAuthorizedPayload']> = {
-  __resolveType: TypeResolveFn<'AuthorizationError' | 'User', ParentType, ContextType>;
-};
-
-export interface JwtScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JWT'], any> {
-  name: 'JWT';
-}
-
-export type LoginInfoResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['LoginInfo'] = ResolversParentTypes['LoginInfo']> = {
-  token?: Resolver<ResolversTypes['JWT'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type LoginPayloadResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['LoginPayload'] = ResolversParentTypes['LoginPayload']> = {
-  __resolveType: TypeResolveFn<'InvalidAccountError' | 'LoginInfo' | 'RateLimitError', ParentType, ContextType>;
-};
-
-export type LogoutPayloadResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['LogoutPayload'] = ResolversParentTypes['LogoutPayload']> = {
-  __resolveType: TypeResolveFn<'AuthorizationError' | 'User', ParentType, ContextType>;
-};
-
-export type MutationResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  healthCheck?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationHealthCheckArgs, 'input'>>;
-  login?: Resolver<ResolversTypes['LoginPayload'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
-  logout?: Resolver<ResolversTypes['LogoutPayload'], ParentType, ContextType>;
-  register?: Resolver<ResolversTypes['RegisterPayload'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'input'>>;
-};
-
 export type QueryResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  healthLive?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  isAuthorized?: Resolver<ResolversTypes['IsAuthorizedPayload'], ParentType, ContextType>;
-};
-
-export type RateLimitErrorResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['RateLimitError'] = ResolversParentTypes['RateLimitError']> = {
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  ttl?: Resolver<ResolversTypes['UnsignedInt'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type RegisterPayloadResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['RegisterPayload'] = ResolversParentTypes['RegisterPayload']> = {
-  __resolveType: TypeResolveFn<'DuplicateEmailError' | 'User', ParentType, ContextType>;
-};
-
-export interface UnsignedIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UnsignedInt'], any> {
-  name: 'UnsignedInt';
-}
-
-export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
-  name: 'Upload';
-}
-
-export type UserResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  live?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ping?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = ApolloContext> = {
-  AuthorizationError?: AuthorizationErrorResolvers<ContextType>;
-  DateTime?: GraphQLScalarType;
-  DuplicateEmailError?: DuplicateEmailErrorResolvers<ContextType>;
-  EmailAddress?: GraphQLScalarType;
-  Error?: ErrorResolvers<ContextType>;
-  File?: FileResolvers<ContextType>;
-  InvalidAccountError?: InvalidAccountErrorResolvers<ContextType>;
-  IsAuthorizedPayload?: IsAuthorizedPayloadResolvers<ContextType>;
-  JWT?: GraphQLScalarType;
-  LoginInfo?: LoginInfoResolvers<ContextType>;
-  LoginPayload?: LoginPayloadResolvers<ContextType>;
-  LogoutPayload?: LogoutPayloadResolvers<ContextType>;
-  Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  RateLimitError?: RateLimitErrorResolvers<ContextType>;
-  RegisterPayload?: RegisterPayloadResolvers<ContextType>;
-  UnsignedInt?: GraphQLScalarType;
-  Upload?: GraphQLScalarType;
-  User?: UserResolvers<ContextType>;
 };
 
 export type DirectiveResolvers<ContextType = ApolloContext> = {
-  cacheControl?: CacheControlDirectiveResolver<any, any, ContextType>;
-  isAuthenticated?: IsAuthenticatedDirectiveResolver<any, any, ContextType>;
   rateLimit?: RateLimitDirectiveResolver<any, any, ContextType>;
 };

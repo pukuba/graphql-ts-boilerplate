@@ -1,7 +1,6 @@
-import Query from "~/resolvers/Query"
-import Mutation from "~/resolvers/Mutation"
+import { Query } from "~/resolvers/Query"
+import { Resolvers } from "~/shared/__generated__"
 
 export default {
 	Query,
-	Mutation,
-}
+} as Resolvers

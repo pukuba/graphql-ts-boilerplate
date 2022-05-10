@@ -7,19 +7,12 @@ import { ApolloServer } from "apollo-server-express"
 import * as http from "http"
 import depthLimit from "graphql-depth-limit"
 import { makeExecutableSchema } from "@graphql-tools/schema"
-import { GraphQLUpload } from "graphql-upload"
-import { resolvers as scalarResolvers } from "graphql-scalars"
-import {
-	constraintDirective,
-	constraintDirectiveTypeDefs,
-} from "graphql-constraint-directive"
 import { BaseRedisCache } from "apollo-server-cache-redis"
 import Redis from "ioredis"
 import { createComplexityLimitRule } from "graphql-validation-complexity"
 
 import { directives } from "~/shared"
-import { loadFilesSync } from "@graphql-tools/load-files"
-const typeDefs = loadFilesSync("src/**/*.graphql")
+import typeDefs from "~/shared/__generated__/typeDefs"
 
 import express from "express"
 import expressPlayground from "graphql-playground-middleware-express"
@@ -32,20 +25,10 @@ app.use(bodyParserGraphQL())
 app.use("/voyager", voyagerMiddleware({ endpointUrl: "/api" }))
 app.use("/graphql", expressPlayground({ endpoint: "/api" }))
 app.disable("x-powered-by")
-
-const schema = constraintDirective()(
-	makeExecutableSchema({
-		typeDefs: [...typeDefs, constraintDirectiveTypeDefs],
-		resolvers: {
-			...resolvers,
-			DateTime: scalarResolvers.DateTime,
-			JWT: scalarResolvers.JWT,
-			EmailAddress: scalarResolvers.EmailAddress,
-			UnsignedInt: scalarResolvers.UnsignedInt,
-			Upload: GraphQLUpload,
-		},
-	}),
-)
+const schema = makeExecutableSchema({
+	typeDefs: `${typeDefs}`,
+	resolvers,
+})
 
 const plugins = []
 /* istanbul ignore next */
