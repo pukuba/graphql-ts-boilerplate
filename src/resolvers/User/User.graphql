@@ -1,0 +1,8 @@
+type User implements Node {
+	id: ID!
+
+	"""
+	유저 아이디
+	"""
+	externalId: String!
+}

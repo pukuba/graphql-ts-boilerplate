@@ -35,7 +35,8 @@ jobs:
         redis-version: ${{ matrix.redis-version }}
 
     - run: yarn install
-    - run: cat ./src/shared/types/models.ts >> compare.txt && yarn codegen && cmp ./src/shared/types/models.ts compare.txt || exit 1; rm compare.txt
-    - run: yarn test
+    - run: cat ./src/shared/__generated__/types.ts >> compare && yarn codegen && cmp ./src/shared/__generated__/types.ts compare || exit 1; rm compare
+    # - run: yarn test
+    - run: yarn lint
       env:
         CI: true

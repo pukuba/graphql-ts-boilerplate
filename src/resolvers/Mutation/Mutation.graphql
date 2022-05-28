@@ -1,0 +1,34 @@
+type Mutation {
+	"""
+	유저를 생성하는 뮤테이션
+	"""
+	createUser(input: CreateUserInput!): CreateUserOutput!
+
+	"""
+	유저를 삭제하는 뮤테이션
+	"""
+	deleteUser(input: DeleteUserInput!): DeleteUserOutput!
+}
+
+input CreateUserInput {
+	"""
+	유저의 아이디
+	"""
+	id: String!
+
+	"""
+	유저의 비밀번호
+	"""
+	password: String!
+}
+
+union DeleteUserOutput = User | Error
+
+union CreateUserOutput = User | Error
+
+input DeleteUserInput {
+	"""
+	유저의 아이디
+	"""
+	id: String!
+}

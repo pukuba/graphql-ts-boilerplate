@@ -1,8 +1,9 @@
 import app from "~/app"
-import { env } from "~/config"
+import { getConstant } from "~/shared/common"
 ;(async () => {
 	const server = await app
-	server.listen(env.PORT, () => {
-		console.log(`server running http://localhost:${env.PORT}/graphql`)
+	const port = getConstant("PORT")
+	server.listen(port, () => {
+		console.log(`server running http://localhost:${port}/graphql`)
 	})
 })()

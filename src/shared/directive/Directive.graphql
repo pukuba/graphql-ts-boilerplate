@@ -1,1 +1,0 @@
-directive @rateLimit(key: String!, limit: Int!, time: Int!) on FIELD_DEFINITION

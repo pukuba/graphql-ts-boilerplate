@@ -16,7 +16,7 @@
     "plugins": [
         "@typescript-eslint"
     ],
-    "ignorePatterns": ["models.ts"],
+    "ignorePatterns": ["models.ts","./src/**/__generated__/**"],
     "rules": {
         "indent": [
             "error",

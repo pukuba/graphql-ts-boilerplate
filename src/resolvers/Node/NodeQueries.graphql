@@ -1,0 +1,6 @@
+type Query {
+	"""
+	ID갑으로 Object가져오기
+	"""
+	node(id: ID!): Node
+}

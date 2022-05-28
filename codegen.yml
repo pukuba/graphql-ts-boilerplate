@@ -3,7 +3,7 @@ generates:
   src/shared/__generated__/schema.graphql:
     schema: 
       - ./src/resolvers/**/*.graphql
-      - ./src/shared/directive/*.graphql
+      # - ./src/shared/directive/*.graphql
     plugins:
       - schema-ast
     config:
@@ -11,19 +11,24 @@ generates:
   src/shared/__generated__/types.ts:
     schema: 
       - ./src/resolvers/**/*.graphql
-      - ./src/shared/directive/*.graphql
+      # - ./src/shared/directive/*.graphql
     plugins:
       - add:
-          content: '/* eslint-disable */'
+          content: |
+            /* eslint-disable */
+            type FirstTypeResolveFnParams<T> = T extends TypeResolveFn<infer U, infer V, infer W> ? U : never;
+            export type NodeResolveType = FirstTypeResolveFnParams<NodeResolvers['__resolveType']>;
       - 'typescript'
       - 'typescript-resolvers'
     config:
       contextType: ../types#ApolloContext
       noNamespaces: true
+      mappers:
+        User: ~/shared/entity/user.entity#UserEntity
   src/shared/__generated__/typeDefs.ts:
     schema: 
       - ./src/resolvers/**/*.graphql
-      - ./src/shared/directive/*.graphql
+      # - ./src/shared/directive/*.graphql
     plugins:
       - add:
           content: |

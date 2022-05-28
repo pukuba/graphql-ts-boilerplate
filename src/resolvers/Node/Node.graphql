@@ -1,0 +1,6 @@
+interface Node {
+	"""
+	스키마에서 유일한 ID 값
+	"""
+	id: ID!
+}

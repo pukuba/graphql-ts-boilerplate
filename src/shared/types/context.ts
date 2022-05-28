@@ -1,10 +1,7 @@
 import { Request } from "express"
-import { redis } from "~/config"
-import { Db } from "mongodb"
+import { repositories } from "~/shared/repositories"
 
 export interface ApolloContext {
-	db: Db
-	redis: typeof redis
+	repositories: typeof repositories
 	req: Request
-	token?: string
 }
