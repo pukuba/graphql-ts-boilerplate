@@ -1,0 +1,23 @@
+type Article implements Node {
+	id: ID!
+
+	"""
+	제목
+	"""
+	title: String!
+
+	"""
+	내용
+	"""
+	content: String!
+
+	"""
+	작성자
+	"""
+	creator: String!
+
+	"""
+	아티클 아이디
+	"""
+	externalId: String!
+}

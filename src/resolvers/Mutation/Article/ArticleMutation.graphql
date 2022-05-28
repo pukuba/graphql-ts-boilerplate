@@ -1,0 +1,39 @@
+type Mutation {
+	"""
+	아티클 생성
+	"""
+	createArticle(input: CreateArticleInput!): CreateArticleOutput!
+
+	"""
+	아티클 삭제
+	"""
+	deleteArticle(input: DeleteArticleInput!): DeleteArticleOutput!
+}
+
+union CreateArticleOutput = Article | Error
+
+union DeleteArticleOutput = Article | Error
+
+input CreateArticleInput {
+	"""
+	제목
+	"""
+	title: String!
+
+	"""
+	내용
+	"""
+	content: String!
+
+	"""
+	작성자
+	"""
+	userId: String!
+}
+
+input DeleteArticleInput {
+	"""
+	아티클 아이디
+	"""
+	id: String!
+}

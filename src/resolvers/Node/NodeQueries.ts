@@ -18,6 +18,9 @@ export const NodeQueries: Resolvers["Query"] = {
 			.with("User", async () => {
 				return context.repositories.user.find(id)
 			})
+			.with("Article", async () => {
+				return context.repositories.article.find(id)
+			})
 			.otherwise(() => null)
 		if (!node) return null
 		return node

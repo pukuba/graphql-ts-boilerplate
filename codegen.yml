@@ -25,6 +25,7 @@ generates:
       noNamespaces: true
       mappers:
         User: ~/shared/entity/user.entity#UserEntity
+        Article: ~/shared/entity/article.entity#ArticleEntity
   src/shared/__generated__/typeDefs.ts:
     schema: 
       - ./src/resolvers/**/*.graphql

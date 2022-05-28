@@ -4,6 +4,7 @@ export type NodeResolveType = FirstTypeResolveFnParams<NodeResolvers['__resolveT
 
 import { GraphQLResolveInfo } from 'graphql';
 import { UserEntity } from '~/shared/entity/user.entity';
+import { ArticleEntity } from '~/shared/entity/article.entity';
 import { ApolloContext } from '../types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -20,6 +21,30 @@ export type Scalars = {
   Float: number;
 };
 
+export type Article = Node & {
+  __typename?: 'Article';
+  /** 내용 */
+  content: Scalars['String'];
+  /** 작성자 */
+  creator: Scalars['String'];
+  /** 아티클 아이디 */
+  externalId: Scalars['String'];
+  id: Scalars['ID'];
+  /** 제목 */
+  title: Scalars['String'];
+};
+
+export type CreateArticleInput = {
+  /** 내용 */
+  content: Scalars['String'];
+  /** 제목 */
+  title: Scalars['String'];
+  /** 작성자 */
+  userId: Scalars['String'];
+};
+
+export type CreateArticleOutput = Article | Error;
+
 export type CreateUserInput = {
   /** 유저의 아이디 */
   id: Scalars['String'];
@@ -28,6 +53,13 @@ export type CreateUserInput = {
 };
 
 export type CreateUserOutput = Error | User;
+
+export type DeleteArticleInput = {
+  /** 아티클 아이디 */
+  id: Scalars['String'];
+};
+
+export type DeleteArticleOutput = Article | Error;
 
 export type DeleteUserInput = {
   /** 유저의 아이디 */
@@ -43,15 +75,29 @@ export type Error = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** 아티클 생성 */
+  createArticle: CreateArticleOutput;
   /** 유저를 생성하는 뮤테이션 */
   createUser: CreateUserOutput;
+  /** 아티클 삭제 */
+  deleteArticle: DeleteArticleOutput;
   /** 유저를 삭제하는 뮤테이션 */
   deleteUser: DeleteUserOutput;
 };
 
 
+export type MutationCreateArticleArgs = {
+  input: CreateArticleInput;
+};
+
+
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
+};
+
+
+export type MutationDeleteArticleArgs = {
+  input: DeleteArticleInput;
 };
 
 
@@ -155,15 +201,20 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Article: ResolverTypeWrapper<ArticleEntity>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  CreateArticleInput: CreateArticleInput;
+  CreateArticleOutput: ResolversTypes['Article'] | ResolversTypes['Error'];
   CreateUserInput: CreateUserInput;
   CreateUserOutput: ResolversTypes['Error'] | ResolversTypes['User'];
+  DeleteArticleInput: DeleteArticleInput;
+  DeleteArticleOutput: ResolversTypes['Article'] | ResolversTypes['Error'];
   DeleteUserInput: DeleteUserInput;
   DeleteUserOutput: ResolversTypes['Error'] | ResolversTypes['User'];
   Error: ResolverTypeWrapper<Error>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Mutation: ResolverTypeWrapper<{}>;
-  Node: ResolversTypes['User'];
+  Node: ResolversTypes['Article'] | ResolversTypes['User'];
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<UserEntity>;
@@ -171,22 +222,44 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Article: ArticleEntity;
   Boolean: Scalars['Boolean'];
+  CreateArticleInput: CreateArticleInput;
+  CreateArticleOutput: ResolversParentTypes['Article'] | ResolversParentTypes['Error'];
   CreateUserInput: CreateUserInput;
   CreateUserOutput: ResolversParentTypes['Error'] | ResolversParentTypes['User'];
+  DeleteArticleInput: DeleteArticleInput;
+  DeleteArticleOutput: ResolversParentTypes['Article'] | ResolversParentTypes['Error'];
   DeleteUserInput: DeleteUserInput;
   DeleteUserOutput: ResolversParentTypes['Error'] | ResolversParentTypes['User'];
   Error: Error;
   ID: Scalars['ID'];
   Mutation: {};
-  Node: ResolversParentTypes['User'];
+  Node: ResolversParentTypes['Article'] | ResolversParentTypes['User'];
   Query: {};
   String: Scalars['String'];
   User: UserEntity;
 };
 
+export type ArticleResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Article'] = ResolversParentTypes['Article']> = {
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  creator?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  externalId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CreateArticleOutputResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['CreateArticleOutput'] = ResolversParentTypes['CreateArticleOutput']> = {
+  __resolveType: TypeResolveFn<'Article' | 'Error', ParentType, ContextType>;
+};
+
 export type CreateUserOutputResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['CreateUserOutput'] = ResolversParentTypes['CreateUserOutput']> = {
   __resolveType: TypeResolveFn<'Error' | 'User', ParentType, ContextType>;
+};
+
+export type DeleteArticleOutputResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['DeleteArticleOutput'] = ResolversParentTypes['DeleteArticleOutput']> = {
+  __resolveType: TypeResolveFn<'Article' | 'Error', ParentType, ContextType>;
 };
 
 export type DeleteUserOutputResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['DeleteUserOutput'] = ResolversParentTypes['DeleteUserOutput']> = {
@@ -199,12 +272,14 @@ export type ErrorResolvers<ContextType = ApolloContext, ParentType extends Resol
 };
 
 export type MutationResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createArticle?: Resolver<ResolversTypes['CreateArticleOutput'], ParentType, ContextType, RequireFields<MutationCreateArticleArgs, 'input'>>;
   createUser?: Resolver<ResolversTypes['CreateUserOutput'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
+  deleteArticle?: Resolver<ResolversTypes['DeleteArticleOutput'], ParentType, ContextType, RequireFields<MutationDeleteArticleArgs, 'input'>>;
   deleteUser?: Resolver<ResolversTypes['DeleteUserOutput'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'input'>>;
 };
 
 export type NodeResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
-  __resolveType: TypeResolveFn<'User', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Article' | 'User', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
 };
 
@@ -221,7 +296,10 @@ export type UserResolvers<ContextType = ApolloContext, ParentType extends Resolv
 };
 
 export type Resolvers<ContextType = ApolloContext> = {
+  Article?: ArticleResolvers<ContextType>;
+  CreateArticleOutput?: CreateArticleOutputResolvers<ContextType>;
   CreateUserOutput?: CreateUserOutputResolvers<ContextType>;
+  DeleteArticleOutput?: DeleteArticleOutputResolvers<ContextType>;
   DeleteUserOutput?: DeleteUserOutputResolvers<ContextType>;
   Error?: ErrorResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
