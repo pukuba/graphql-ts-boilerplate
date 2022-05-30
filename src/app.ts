@@ -1,21 +1,19 @@
 import "reflect-metadata"
 import "~/shared/common/lib/dotenv"
 
-import { express as voyagerMiddleware } from "graphql-voyager/middleware"
 import { ApolloServer } from "apollo-server-express"
-import * as http from "http"
+import { bodyParserGraphQL } from "body-parser-graphql"
+import express from "express"
 import depthLimit from "graphql-depth-limit"
-import { makeExecutableSchema } from "@graphql-tools/schema"
+import expressPlayground from "graphql-playground-middleware-express"
 import { createComplexityLimitRule } from "graphql-validation-complexity"
-
+import { express as voyagerMiddleware } from "graphql-voyager/middleware"
+import * as http from "http"
+import { createContextFactory } from "~/graphql/context"
+import resolvers from "~/resolvers"
 import typeDefs from "~/shared/__generated__/typeDefs"
 
-import express from "express"
-import expressPlayground from "graphql-playground-middleware-express"
-import { bodyParserGraphQL } from "body-parser-graphql"
-import { repositories } from "./shared/repositories"
-
-import resolvers from "~/resolvers"
+import { makeExecutableSchema } from "@graphql-tools/schema"
 
 const app = express()
 app.use(bodyParserGraphQL())
@@ -31,9 +29,7 @@ const schema = makeExecutableSchema({
 export default (async () => {
 	const server = new ApolloServer({
 		schema: schema,
-		context: ({ req }) => {
-			return { repositories, req }
-		},
+		context: createContextFactory(),
 		validationRules: [depthLimit(8), createComplexityLimitRule(1000)],
 	})
 

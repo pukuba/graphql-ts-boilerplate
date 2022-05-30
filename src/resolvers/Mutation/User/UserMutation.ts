@@ -1,5 +1,5 @@
-import { Resolvers } from "~/shared/__generated__"
 import { createHashedPassword } from "~/shared"
+import { Resolvers } from "~/shared/__generated__"
 
 export const UserMutation: Resolvers["Mutation"] = {
 	createUser: async (parent, args, context) => {

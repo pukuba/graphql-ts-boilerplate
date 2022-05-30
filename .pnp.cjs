@@ -51,6 +51,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/graphql-upload", "npm:8.0.11"],\
             ["@types/ioredis", "npm:4.28.8"],\
             ["@types/jsonwebtoken", "npm:8.5.8"],\
+            ["@types/lodash", "npm:4.14.182"],\
             ["@types/mime-types", "npm:2.1.1"],\
             ["@types/mocha", "npm:9.1.1"],\
             ["@types/mongodb", "npm:3.6.20"],\
@@ -90,6 +91,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["http", "npm:0.0.1-security"],\
             ["ioredis", "npm:4.28.5"],\
             ["jsonwebtoken", "npm:8.5.1"],\
+            ["lodash", "npm:4.17.21"],\
             ["mime-types", "npm:2.1.34"],\
             ["mocha", "npm:10.0.0"],\
             ["mongodb", "virtual:27ac40247e51466cbdeaa19f1bc919a8f4442a53b592dc51a527bb76c4468256048679343b63de79cf7b90693c54e950ce82bb23569f9a796be53dd2e5222c17#npm:3.7.3"],\
@@ -3188,6 +3190,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/koa-compose", "npm:3.2.5"],\
             ["@types/koa", "npm:2.13.4"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/lodash", [\
+        ["npm:4.14.182", {\
+          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.182-1073aac722-7dd137aa9d.zip/node_modules/@types/lodash/",\
+          "packageDependencies": [\
+            ["@types/lodash", "npm:4.14.182"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -7717,6 +7728,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/graphql-upload", "npm:8.0.11"],\
             ["@types/ioredis", "npm:4.28.8"],\
             ["@types/jsonwebtoken", "npm:8.5.8"],\
+            ["@types/lodash", "npm:4.14.182"],\
             ["@types/mime-types", "npm:2.1.1"],\
             ["@types/mocha", "npm:9.1.1"],\
             ["@types/mongodb", "npm:3.6.20"],\
@@ -7756,6 +7768,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["http", "npm:0.0.1-security"],\
             ["ioredis", "npm:4.28.5"],\
             ["jsonwebtoken", "npm:8.5.1"],\
+            ["lodash", "npm:4.17.21"],\
             ["mime-types", "npm:2.1.34"],\
             ["mocha", "npm:10.0.0"],\
             ["mongodb", "virtual:27ac40247e51466cbdeaa19f1bc919a8f4442a53b592dc51a527bb76c4468256048679343b63de79cf7b90693c54e950ce82bb23569f9a796be53dd2e5222c17#npm:3.7.3"],\

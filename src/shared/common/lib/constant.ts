@@ -3,6 +3,7 @@ import { z } from "zod"
 const EnvSchema = z.object({
 	MONGO_HOST: z.string(),
 	PORT: z.string(),
+	JWT_SECRET: z.string(),
 })
 
 const constant = EnvSchema.parse(process.env)
